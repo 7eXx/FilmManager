@@ -26,11 +26,11 @@ import support.Film;
  * @author Mark
  */
 public class FilmModificaController implements Initializable {
-
+    
     private Film film;
     boolean modifica;
     FilmManagerController main;
-
+    
     @FXML
     private TextField tfIdFilm, tfNome, tfDurata, tfNazione, tfVoto, tfBudget, tfNumOscar;
     @FXML
@@ -39,92 +39,107 @@ public class FilmModificaController implements Initializable {
     private TextArea taDescrizione;
     @FXML
     private Button btConferma, btAnnulla;
-
+    
     public void initData(Film film, boolean modifica, FilmManagerController manager) {
-
+        
         this.modifica = modifica;
         this.film = film;
         this.main = manager;
         if (modifica) {
-
+            
             tfIdFilm.setText(film.getId() + "");
             tfNome.setText(film.getNome());
             
             tfDurata.setText(film.getDurata() + "");
             tfNazione.setText(film.getNazione());
-
+            
             DecimalFormat df = new DecimalFormat("#.##");
             tfBudget.setText(df.format(film.getBudget()));
-
+            
             if (film.getData_uscita() != null) {
                 dpDataUscita.setValue(LocalDate.parse(film.getData_uscita()));
             }
-
+            
             tfVoto.setText(film.getVoto() + "");
             taDescrizione.setText(film.getDescrizione());
             tfNumOscar.setText(film.getNum_oscar() + "");
         }
     }
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // prima viene invocato initialize e poi il metodo per mandare i dati
     }
-
+    
     public void onClickConferma(ActionEvent event) {
-
-        if (!modifica) {
-            film = new Film();
+        if (!tfNome.getText().trim().equals("")) {
+            
+            if (!modifica) {
+                film = new Film();
+            }
+            
+            film.setNome(tfNome.getText());
+            
+            if (!tfDurata.getText().trim().equals("")) {
+                film.setDurata(Integer.parseInt(tfDurata.getText()));
+            } else {
+                film.setDurata(0);
+            }
+            
+            if (!tfNazione.getText().trim().equals("")) {
+                film.setNazione(tfNazione.getText());
+            } else {
+                film.setNazione(null);
+            }
+            
+            if (!tfBudget.getText().trim().equals("")) {
+                film.setBudget(Double.parseDouble(tfBudget.getText()));
+            } else {
+                film.setBudget(0);
+            }
+            
+            if (dpDataUscita.getValue() != null) {
+                film.setData_uscita(dpDataUscita.getValue().toString());
+            } else {
+                film.setData_uscita(null);
+            }
+            
+            if (!tfVoto.getText().trim().equals("")) {
+                film.setVoto(Integer.parseInt(tfVoto.getText()));
+            } else {
+                film.setVoto(0);
+            }
+            
+            if (!taDescrizione.getText().trim().equals("")) {
+                film.setDescrizione(taDescrizione.getText());
+            } else {
+                film.setDescrizione(null);
+            }
+            
+            if (!tfNumOscar.getText().trim().equals("")) {
+                film.setNum_oscar(Integer.parseInt(tfNumOscar.getText()));
+            } else {
+                film.setNum_oscar(0);
+            }
+            
+            if (modifica) {
+                
+                Cinema.updateInfo(film);
+            } // altrimenti inserimento
+            else {
+                
+                Cinema.insertInfo(film);
+                main.insertInfo(film);
+            }
+            
+            Stage stage = (Stage) btConferma.getScene().getWindow();
+            stage.close();
         }
-
-        film.setNome(tfNome.getText());
-        if (!tfDurata.getText().trim().equals("")) {
-            film.setDurata(Integer.parseInt(tfDurata.getText()));
-        } else {
-            film.setDurata(0);
-        }
-        
-        if (tfNazione.getText() != null && !tfNazione.getText().trim().equals("")) {
-            film.setNazione(tfNazione.getText());
-        }
-
-        if (!tfBudget.getText().trim().equals("")) {
-            film.setBudget(Double.parseDouble(tfBudget.getText()));
-        }
-
-        if ( dpDataUscita.getValue() != null && !dpDataUscita.getValue().toString().equals("")) {
-            film.setData_uscita(dpDataUscita.getValue().toString());
-        }
-
-        if (!tfVoto.getText().trim().equals("")) {
-            film.setVoto(Integer.parseInt(tfVoto.getText()));
-        }
-
-        if (taDescrizione.getText() != null && !taDescrizione.getText().trim().equals("")) {
-            film.setDescrizione(taDescrizione.getText());
-        }
-
-        if (!tfNumOscar.getText().trim().equals("")) {
-            film.setNum_oscar(Integer.parseInt(tfNumOscar.getText()));
-        }
-
-        if (modifica) {
-
-            Cinema.updateInfo(film);
-        } // altrimenti inserimento
-        else {
-
-            Cinema.insertInfo(film);
-            main.insertInfo(film);
-        }
-
-        Stage stage = (Stage) btConferma.getScene().getWindow();
-        stage.close();
     }
-
+    
     public void onClickAnnulla(ActionEvent event) {
         Stage stage = (Stage) btAnnulla.getScene().getWindow();
         stage.close();
     }
-
+    
 }

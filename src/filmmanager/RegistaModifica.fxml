@@ -6,8 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="490.0" prefWidth="470.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="filmmanager.RegistaModificaController">
+<AnchorPane id="AnchorPane" prefHeight="490.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.RegistaModificaController">
    <children>
       <Label layoutX="28.0" layoutY="28.0" text="ID Regista" />
       <TextField fx:id="tfIdRegista" editable="false" layoutX="98.0" layoutY="23.0" prefHeight="31.0" prefWidth="49.0" />

@@ -129,20 +129,12 @@ public class Cinema {
         rs.updateString(Attore.NOME, attore.getNome());
         rs.updateString(Attore.COGNOME, attore.getCognome());
         // nazione e citta
-        if (attore.getNazione() != null) {
-            rs.updateString(Attore.NAZIONE, attore.getNazione());
-        }
-        if (attore.getCitta() != null) {
-            rs.updateString(Attore.CITTA, attore.getCitta());
-        }
+        rs.updateString(Attore.NAZIONE, attore.getNazione());
+        rs.updateString(Attore.CITTA, attore.getCitta());
         // data nascita
-        if (attore.getData_nascita() != null) {
-            rs.updateString(Attore.DATA_NASCITA, attore.getData_nascita());
-        }
+        rs.updateString(Attore.DATA_NASCITA, attore.getData_nascita());
         // biografia
-        if (attore.getBiografia() != null) {
-            rs.updateString(Attore.BIOGRAFIA, attore.getBiografia());
-        }
+        rs.updateString(Attore.BIOGRAFIA, attore.getBiografia());
         // aggiornamento riga
         rs.updateRow();
         return true;
@@ -199,21 +191,15 @@ public class Cinema {
         // nome
         rs.updateString(Regista.NOME, regista.getNome());
         // cognome
-        if (regista.getCognome() != null) {
-            rs.updateString(Regista.COGNOME, regista.getCognome());
-        }
+
+        rs.updateString(Regista.COGNOME, regista.getCognome());
+
         // nazione
-        if (regista.getNazione() != null) {
-            rs.updateString(Regista.NAZIONE, regista.getNazione());
-        }
+        rs.updateString(Regista.NAZIONE, regista.getNazione());
         // data nascita
-        if (regista.getData_nascita() != null) {
-            rs.updateString(Regista.DATA_NASCITA, regista.getData_nascita());
-        }
+        rs.updateString(Regista.DATA_NASCITA, regista.getData_nascita());
         // biografia
-        if (regista.getData_nascita() != null) {
-            rs.updateString(Regista.BIOGRAFIA, regista.getBiografia());
-        }
+        rs.updateString(Regista.BIOGRAFIA, regista.getBiografia());
         // aggiorna riga
         rs.updateRow();
         return true;
@@ -419,7 +405,7 @@ public class Cinema {
                     success = true;
 
                 } else if (obj instanceof Regista) {
-                    Regista regista = (Regista)obj;
+                    Regista regista = (Regista) obj;
                     String query = "DELETE FROM REGISTA WHERE ID_regista = " + regista.getId();
                     stmt = conn.createStatement();
                     rs = stmt.executeUpdate(query);

@@ -28,27 +28,27 @@ public class AttoreModificaController implements Initializable {
 
     @FXML
     private Button btConferma, btAnnulla;
-    
+
     @FXML
     private TextField tfNome, tfCognome, tfIdAttore, tfCitta, tfNazione;
-    
+
     @FXML
     private DatePicker dpDataNascita;
-    
+
     @FXML
     private TextArea taBiografia;
-    
+
     private boolean modifica;
     private FilmManagerController main;
     private Attore attore;
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-    }    
+
+    }
 
     void initData(Attore attore, boolean modifica, FilmManagerController main) {
 
@@ -70,48 +70,58 @@ public class AttoreModificaController implements Initializable {
             taBiografia.setText(attore.getBiografia());
         }
     }
-    
+
     public void onClickConferma(ActionEvent event) {
+        if (!tfNome.getText().trim().equals("") && !tfCognome.getText().trim().equals("")) {
 
-        if (!modifica) {
-            attore = new Attore();
+            if (!modifica) {
+                attore = new Attore();
+            }
+
+            attore.setNome(tfNome.getText().trim());
+            attore.setCognome(tfCognome.getText().trim());
+
+            if (!tfNazione.getText().trim().equals("")) {
+                attore.setNazione(tfNazione.getText());
+            } else {
+                attore.setNazione(null);
+            }
+            if (!tfCitta.getText().trim().equals("")) {
+                attore.setCitta(tfCitta.getText());
+            } else {
+                attore.setCitta(null);
+            }
+
+            if (dpDataNascita.getValue() != null) {
+                attore.setData_nascita(dpDataNascita.getValue().toString());
+            } else {
+                attore.setData_nascita(null);
+            }
+
+            if (!taBiografia.getText().trim().equals("")) {
+                attore.setBiografia(taBiografia.getText());
+            } else {
+                attore.setBiografia(null);
+            }
+
+            if (modifica) {
+
+                Cinema.updateInfo(attore);
+            } // altrimenti inserimento
+            else {
+
+                Cinema.insertInfo(attore);
+                main.insertInfo(attore);
+            }
+
+            Stage stage = (Stage) btConferma.getScene().getWindow();
+            stage.close();
         }
-
-        attore.setNome(tfNome.getText().trim());
-        attore.setCognome(tfCognome.getText().trim());
-        
-        if (tfNazione.getText() != null && !tfNazione.getText().trim().equals("")) {
-            attore.setNazione(tfNazione.getText());
-        }
-        if (tfCitta.getText() != null && !tfCitta.getText().trim().equals("")) {
-            attore.setCitta(tfCitta.getText());
-        }
-
-        if ( dpDataNascita.getValue() != null && !dpDataNascita.getValue().toString().equals("")) {
-            attore.setData_nascita(dpDataNascita.getValue().toString());
-        }
-
-        if (taBiografia.getText() != null && !taBiografia.getText().trim().equals("")) {
-            attore.setBiografia(taBiografia.getText());
-        }
-
-        if (modifica) {
-
-            Cinema.updateInfo(attore);
-        } // altrimenti inserimento
-        else {
-
-            Cinema.insertInfo(attore);
-            main.insertInfo(attore);
-        }
-
-        Stage stage = (Stage) btConferma.getScene().getWindow();
-        stage.close();
     }
 
     public void onClickAnnulla(ActionEvent event) {
         Stage stage = (Stage) btAnnulla.getScene().getWindow();
         stage.close();
     }
-    
+
 }
