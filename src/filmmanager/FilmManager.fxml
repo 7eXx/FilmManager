@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="574.0" prefWidth="737.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.FilmManagerController">
+   <children>
+      <MenuBar prefHeight="32.0" prefWidth="671.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Nuovo">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#onClickNuovoFilm" text="Film" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickNuovoAttore" text="Attore" />
+                  <MenuItem mnemonicParsing="false" text="Regista" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickNuovoProduttore" text="Casa Produttrice" />
+                  <MenuItem mnemonicParsing="false" text="Genere" />
+            </items>
+          </Menu>
+            <Menu fx:id="menuModifica" mnemonicParsing="false" text="Modifica">
+               <items>
+                  <MenuItem fx:id="itemModifica" mnemonicParsing="false" onAction="#onClickModifica" text="Modifica Selezione" />
+                  <MenuItem fx:id="itemRimuovi" mnemonicParsing="false" onAction="#onClickElimina" text="Cancella Selezione" />
+                  <MenuItem mnemonicParsing="false" text="Trova" />
+               </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Aiuto">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Informazioni" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TabPane fx:id="tabPaneInfo" layoutY="31.0" prefHeight="512.0" prefWidth="671.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
+        <tabs>
+          <Tab fx:id="tabFilms" text="Films">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
+                     <children>
+                        <TableView fx:id="tableFilms" editable="true" layoutX="67.0" layoutY="-2.0" prefHeight="476.0" prefWidth="671.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-2.0">
+                          <columns>
+                            <TableColumn fx:id="filmNome" prefWidth="274.0" text="Nome" />
+                            <TableColumn fx:id="filmDurata" minWidth="0.0" prefWidth="67.0" text="Durata" />
+                              <TableColumn fx:id="filmNazione" prefWidth="77.0" text="Nazione" />
+                              <TableColumn fx:id="filmBudget" prefWidth="93.0" text="Budget" />
+                              <TableColumn fx:id="filmDataUscita" prefWidth="101.0" text="Data Uscita" />
+                              <TableColumn fx:id="filmVoto" minWidth="8.0" prefWidth="64.0" text="Voto" />
+                              <TableColumn fx:id="filmNumOscar" prefWidth="60.0" text="Oscar" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="tabAttori" text="Attori">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tableAttori" layoutX="202.0" layoutY="125.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columns>
+                              <TableColumn fx:id="attoreNome" prefWidth="165.0" text="Nome" />
+                              <TableColumn fx:id="attoreCognome" prefWidth="161.0" text="Cognome" />
+                              <TableColumn fx:id="attoreNazione" prefWidth="98.0" text="Nazione" />
+                              <TableColumn fx:id="attoreCitta" prefWidth="160.0" text="Citta" />
+                              <TableColumn fx:id="attoreDataNascita" prefWidth="150.0" text="Data Nascita" />
+                           </columns></TableView>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab fx:id="tabDirettori" text="Regista">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
+                     <children>
+                        <TableView fx:id="tableRegisti" layoutX="217.0" layoutY="137.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="registaNome" prefWidth="181.0" text="Nome" />
+                              <TableColumn fx:id="registaCognome" prefWidth="188.0" text="Cognome" />
+                              <TableColumn fx:id="registaNazione" prefWidth="197.0" text="Nazione" />
+                              <TableColumn fx:id="registaDataNascita" prefWidth="170.0" text="Data Nascita" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="tabProduttori" text="Casa Produttrice">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
+                     <children>
+                        <TableView layoutX="194.0" layoutY="84.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="tabGeneri" text="Genere">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
+                     <children>
+                        <TableView layoutX="180.0" layoutY="99.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
