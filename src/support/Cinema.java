@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 
 /**
  * classe di supporto per le operazioni sul database
+ *
  * @author marco
  */
 public class Cinema {
@@ -50,7 +51,7 @@ public class Cinema {
     }
 
     private static boolean updateFilm(Film film, Statement stmt, ResultSet rs) throws SQLException {
-        
+
         String query = "SELECT * FROM FILM WHERE ID_Film = " + film.getId();
         rs = stmt.executeQuery(query);
 
@@ -74,7 +75,7 @@ public class Cinema {
     }
 
     private static boolean insertFilm(Film film, Connection conn, PreparedStatement stmt, ResultSet rs) throws SQLException {
-        
+
         String query = "Insert Into FILM (nome, durata, nazione, budget, data_uscita, voto, descrizione, num_oscar) values(?,?,?,?,?,?,?,?)";
         stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -97,7 +98,7 @@ public class Cinema {
 
     }
 
-    private static ObservableList getActors(Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getAttori(Statement stmt, ResultSet rs) throws SQLException {
 
         String query = "SELECT * FROM ATTORE";
         rs = stmt.executeQuery(query);
@@ -168,7 +169,7 @@ public class Cinema {
         return true;
     }
 
-    private static ObservableList getDirectors(Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getRegisti(Statement stmt, ResultSet rs) throws SQLException {
 
         String query = "SELECT * FROM REGISTA";
         rs = stmt.executeQuery(query);
@@ -190,6 +191,53 @@ public class Cinema {
         return data;
     }
 
+    private static boolean updateRegista(Regista regista, Statement stmt, ResultSet rs) throws SQLException {
+        String query = "SELECT * FROM REGISTA WHERE ID_regista = " + regista.getId();
+        rs = stmt.executeQuery(query);
+
+        rs.first();
+        // nome
+        rs.updateString(Regista.NOME, regista.getNome());
+        // cognome
+        if (regista.getCognome() != null) {
+            rs.updateString(Regista.COGNOME, regista.getCognome());
+        }
+        // nazione
+        if (regista.getNazione() != null) {
+            rs.updateString(Regista.NAZIONE, regista.getNazione());
+        }
+        // data nascita
+        if (regista.getData_nascita() != null) {
+            rs.updateString(Regista.DATA_NASCITA, regista.getData_nascita());
+        }
+        // biografia
+        if (regista.getData_nascita() != null) {
+            rs.updateString(Regista.BIOGRAFIA, regista.getBiografia());
+        }
+        // aggiorna riga
+        rs.updateRow();
+        return true;
+
+    }
+
+    private static boolean insertRegista(Regista regista, Connection conn, PreparedStatement stmt, ResultSet rs) throws SQLException {
+        String query = "Insert into Regista (nome,cognome,nazione, data_nascita, biografia) values(?,?,?,?,?)";
+        stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+        stmt.setString(1, regista.getNome());
+        stmt.setString(2, regista.getCognome());
+        stmt.setString(3, regista.getNazione());
+        stmt.setString(4, regista.getData_nascita());
+        stmt.setString(5, regista.getBiografia());
+
+        stmt.executeUpdate();
+        rs = stmt.getGeneratedKeys();
+        if (rs != null && rs.next()) {
+            regista.setId(rs.getInt(1));
+        }
+        return true;
+    }
+
     public static ObservableList getInfo(Class o) {
 
         Connection conn = null;
@@ -209,10 +257,10 @@ public class Cinema {
                     data = getFilms(stmt, rs);
                 } else if (o.equals(Attore.class
                 )) {
-                    data = getActors(stmt, rs);
+                    data = getAttori(stmt, rs);
                 } else if (o.equals(Regista.class
                 )) {
-                    data = getDirectors(stmt, rs);
+                    data = getRegisti(stmt, rs);
                 }
             }
         } catch (SQLException ex) {
@@ -256,14 +304,14 @@ public class Cinema {
                 stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
                 if (obj instanceof Film) {
-                    Film film = (Film) obj;
-                    success = updateFilm(film, stmt, rs);
+                    Film f = (Film) obj;
+                    success = updateFilm(f, stmt, rs);
                 } else if (obj instanceof Attore) {
-                    Attore attore = (Attore) obj;
-                    success = updateAttore(attore, stmt, rs);
+                    Attore a = (Attore) obj;
+                    success = updateAttore(a, stmt, rs);
                 } else if (obj instanceof Regista) {
-
-                    success = true;
+                    Regista r = (Regista) obj;
+                    success = updateRegista(r, stmt, rs);
                 }
             }
 
@@ -307,18 +355,17 @@ public class Cinema {
             if (conn != null) {
 
                 if (obj instanceof Film) {
-                    Film film = (Film) obj;
-                    success = insertFilm(film, conn, stmt, rs);
+                    Film f = (Film) obj;
+                    success = insertFilm(f, conn, stmt, rs);
                 } else if (obj instanceof Attore) {
-                    Attore attore = (Attore) obj;
-                    success = insertAttore(attore, conn, stmt, rs);
+                    Attore a = (Attore) obj;
+                    success = insertAttore(a, conn, stmt, rs);
 
                 } else if (obj instanceof Regista) {
-
-                    success = true;
+                    Regista r = (Regista) obj;
+                    success = insertRegista(r, conn, stmt, rs);
                 }
             }
-
         } catch (SQLException ex) {
 
             System.out.println("\n---SQLException caught ---\n");
@@ -372,11 +419,13 @@ public class Cinema {
                     success = true;
 
                 } else if (obj instanceof Regista) {
-
+                    Regista regista = (Regista)obj;
+                    String query = "DELETE FROM REGISTA WHERE ID_regista = " + regista.getId();
+                    stmt = conn.createStatement();
+                    rs = stmt.executeUpdate(query);
                     success = true;
                 }
             }
-
         } catch (SQLException ex) {
 
             System.out.println("\n---SQLException caught ---\n");

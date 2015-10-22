@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="490.0" prefWidth="470.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="filmmanager.RegistaModificaController">
+   <children>
+      <Label layoutX="28.0" layoutY="28.0" text="ID Regista" />
+      <TextField fx:id="tfIdRegista" editable="false" layoutX="98.0" layoutY="23.0" prefHeight="31.0" prefWidth="49.0" />
+      <Label layoutX="188.0" layoutY="28.0" text="Data Nascita" />
+      <DatePicker fx:id="dpDataNascita" layoutX="281.0" layoutY="23.0" prefHeight="31.0" prefWidth="168.0" />
+      <Label layoutX="28.0" layoutY="67.0" text="Nome" />
+      <TextField fx:id="tfNome" layoutX="98.0" layoutY="62.0" prefHeight="31.0" prefWidth="351.0" />
+      <Label layoutX="26.0" layoutY="109.0" text="Cognome" />
+      <TextField fx:id="tfCognome" layoutX="98.0" layoutY="104.0" prefHeight="31.0" prefWidth="351.0" />
+      <Label layoutX="28.0" layoutY="152.0" text="Nazione" />
+      <TextField fx:id="tfNazione" layoutX="98.0" layoutY="147.0" prefHeight="31.0" prefWidth="351.0" />
+      <Label layoutX="26.0" layoutY="186.0" text="Biografia" />
+      <TextArea fx:id="taBiografia" layoutX="26.0" layoutY="215.0" prefHeight="200.0" prefWidth="425.0" wrapText="true" />
+      <Button fx:id="btConferma" layoutX="58.0" layoutY="429.0" mnemonicParsing="false" onAction="#onClickConferma" prefHeight="41.0" prefWidth="129.0" text="Conferma" />
+      <Button fx:id="btAnnulla" layoutX="280.0" layoutY="429.0" mnemonicParsing="false" onAction="#onClickAnnulla" prefHeight="41.0" prefWidth="129.0" text="Annulla" />
+   </children>
+</AnchorPane>

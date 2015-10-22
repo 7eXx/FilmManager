@@ -14,7 +14,7 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#onClickNuovoFilm" text="Film" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickNuovoAttore" text="Attore" />
-                  <MenuItem mnemonicParsing="false" text="Regista" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickNuovoRegista" text="Regista" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickNuovoProduttore" text="Casa Produttrice" />
                   <MenuItem mnemonicParsing="false" text="Genere" />
             </items>
@@ -68,7 +68,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="tabDirettori" text="Regista">
+            <Tab fx:id="tabRegisti" text="Regista">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
                      <children>
@@ -86,30 +86,12 @@
             </Tab>
             <Tab fx:id="tabProduttori" text="Casa Produttrice">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
-                     <children>
-                        <TableView layoutX="194.0" layoutY="84.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0" />
                </content>
             </Tab>
             <Tab fx:id="tabGeneri" text="Genere">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
-                     <children>
-                        <TableView layoutX="180.0" layoutY="99.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0" />
                </content>
             </Tab>
         </tabs>

@@ -46,7 +46,7 @@ public class FilmManagerController implements Initializable {
     private TabPane tabPaneInfo;
 
     @FXML
-    private Tab tabFilms, tabAttori, tabDirettori, tabProduttori, tabGeneri;
+    private Tab tabFilms, tabAttori, tabRegisti, tabProduttori, tabGeneri;
 
     @FXML
     private TableView<Film> tableFilms;
@@ -156,6 +156,28 @@ public class FilmManagerController implements Initializable {
 
                 stage.show();
             }
+        } else if (tabRegisti.isSelected()) {
+            
+            if(!tableRegisti.getSelectionModel().isEmpty()){
+                
+                int i = tableRegisti.getSelectionModel().getFocusedIndex();
+                Regista regista = registi.get(i);
+                
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegistaModifica.fxml"));
+                Parent root = (Parent) fxmlLoader.load();
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initStyle(StageStyle.DECORATED);
+                stage.setTitle("Modifica Regista");
+                stage.setScene(new Scene(root));
+
+                RegistaModificaController manager = fxmlLoader.<RegistaModificaController>getController();
+                manager.initData(regista, true, this);
+                
+                stage.show();
+            }
+                
+            //TODO: inizia interfaccia modifica dei Registi
         }
     }
 
@@ -197,8 +219,30 @@ public class FilmManagerController implements Initializable {
         stage.show();
     }
 
+    public void onClickNuovoRegista(ActionEvent event) throws IOException {
+        if (tabPaneInfo.getSelectionModel().getSelectedItem() != tabRegisti) {
+            tabPaneInfo.getSelectionModel().select(tabRegisti);
+        }
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegistaModifica.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setTitle("Inserisci Regista");
+        stage.setScene(new Scene(root));
+
+        RegistaModificaController manager = fxmlLoader.<RegistaModificaController>getController();
+        manager.initData(null, false, this);
+        stage.show();
+    }
+
     public void onClickNuovoProduttore(ActionEvent event) {
         tabPaneInfo.getSelectionModel().select(tabProduttori);
+    }
+    
+    public void onClickNuovoGenere(ActionEvent event){
+        tabPaneInfo.getSelectionModel().select(tabGeneri);
     }
 
     public void onClickElimina(ActionEvent event) {
@@ -206,7 +250,6 @@ public class FilmManagerController implements Initializable {
         if (tabFilms.isSelected()) {
 
             if (!tableFilms.getSelectionModel().isEmpty()) {
-
                 int i = tableFilms.getSelectionModel().getFocusedIndex();
                 Film f = films.get(i);
 
@@ -216,12 +259,20 @@ public class FilmManagerController implements Initializable {
         } else if (tabAttori.isSelected()) {
 
             if (!tableAttori.getSelectionModel().isEmpty()) {
-
                 int i = tableAttori.getSelectionModel().getFocusedIndex();
                 Attore a = attori.get(i);
 
                 Cinema.deleteInfo(a);
                 attori.remove(a);
+            }
+        } else if (tabRegisti.isSelected()){
+            
+            if(!tableRegisti.getSelectionModel().isEmpty()){
+                int i = tableRegisti.getSelectionModel().getFocusedIndex();
+                Regista r = registi.get(i);
+                
+                Cinema.deleteInfo(r);
+                registi.remove(r);
             }
         }
     }
@@ -239,6 +290,11 @@ public class FilmManagerController implements Initializable {
         } else if (o instanceof Attore) {
             Attore a = (Attore) o;
             attori.add(a);
+        }
+        else if (o instanceof Regista)
+        {
+            Regista r = (Regista) o;
+            registi.add(r);
         }
     }
 
