@@ -15,7 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- *
+ * classe di supporto per le operazioni sul database
  * @author marco
  */
 public class Cinema {
