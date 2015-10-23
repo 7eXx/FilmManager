@@ -224,6 +224,42 @@ public class Cinema {
         return true;
     }
 
+    private static ObservableList getProduttori(Statement stmt, ResultSet rs) throws SQLException {
+        String query = "SELECT * FROM CASA_PRODUTTRICE";
+        rs = stmt.executeQuery(query);
+
+        ObservableList<Produttore> data = FXCollections.observableArrayList();
+        while (rs.next()) {
+            Produttore p = new Produttore();
+
+            p.setId(rs.getInt(Produttore.ID));
+            p.setNome(rs.getString(Produttore.NOME));
+            p.setNazione(rs.getString(Produttore.NAZIONE));
+            p.setDescrizione(rs.getString(Produttore.DESCRIZIONE));
+
+            data.add(p);
+        }
+        return data;
+    }
+
+    private static ObservableList getGeneri(Statement stmt, ResultSet rs) throws SQLException {
+        String query = "SELECT * FROM GENERE";
+        rs = stmt.executeQuery(query);
+        
+        ObservableList<Genere> data = FXCollections.observableArrayList();
+        while(rs.next())
+        {
+            Genere g = new Genere();
+            
+            g.setId(rs.getInt(Genere.ID));
+            g.setGenere(rs.getString(Genere.GENERE));
+            g.setDescrizione(rs.getString(Genere.DESCRIZIONE));
+            
+            data.add(g);
+        }
+        return data;
+    }
+
     public static ObservableList getInfo(Class o) {
 
         Connection conn = null;
@@ -238,15 +274,16 @@ public class Cinema {
 
                 stmt = conn.createStatement();
 
-                if (o.equals(Film.class
-                )) {
+                if (o.equals(Film.class)) {
                     data = getFilms(stmt, rs);
-                } else if (o.equals(Attore.class
-                )) {
+                } else if (o.equals(Attore.class)) {
                     data = getAttori(stmt, rs);
-                } else if (o.equals(Regista.class
-                )) {
+                } else if (o.equals(Regista.class)) {
                     data = getRegisti(stmt, rs);
+                } else if (o.equals(Produttore.class)) {
+                    data = getProduttori(stmt, rs);
+                } else if (o.equals(Genere.class)) {
+                    data = getGeneri(stmt, rs);
                 }
             }
         } catch (SQLException ex) {
@@ -436,4 +473,5 @@ public class Cinema {
         }
         return success;
     }
+
 }

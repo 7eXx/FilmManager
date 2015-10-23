@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="574.0" prefWidth="737.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.FilmManagerController">
+<AnchorPane id="AnchorPane" prefHeight="539.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.FilmManagerController">
    <children>
       <MenuBar prefHeight="32.0" prefWidth="671.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -41,13 +41,13 @@
                      <children>
                         <TableView fx:id="tableFilms" editable="true" layoutX="67.0" layoutY="-2.0" prefHeight="476.0" prefWidth="671.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-2.0">
                           <columns>
-                            <TableColumn fx:id="filmNome" prefWidth="274.0" text="Nome" />
-                            <TableColumn fx:id="filmDurata" minWidth="0.0" prefWidth="67.0" text="Durata" />
-                              <TableColumn fx:id="filmNazione" prefWidth="77.0" text="Nazione" />
-                              <TableColumn fx:id="filmBudget" prefWidth="93.0" text="Budget" />
-                              <TableColumn fx:id="filmDataUscita" prefWidth="101.0" text="Data Uscita" />
-                              <TableColumn fx:id="filmVoto" minWidth="8.0" prefWidth="64.0" text="Voto" />
-                              <TableColumn fx:id="filmNumOscar" prefWidth="60.0" text="Oscar" />
+                            <TableColumn fx:id="filmNome" prefWidth="231.0" resizable="false" text="Nome" />
+                            <TableColumn fx:id="filmDurata" minWidth="0.0" prefWidth="59.0" resizable="false" text="Durata" />
+                              <TableColumn fx:id="filmNazione" prefWidth="112.0" resizable="false" text="Nazione" />
+                              <TableColumn fx:id="filmBudget" prefWidth="73.0" resizable="false" text="Budget" />
+                              <TableColumn fx:id="filmDataUscita" prefWidth="88.0" resizable="false" text="Data Uscita" />
+                              <TableColumn fx:id="filmVoto" minWidth="8.0" prefWidth="46.0" resizable="false" text="Voto" />
+                              <TableColumn fx:id="filmNumOscar" prefWidth="52.0" resizable="false" text="Oscar" />
                           </columns>
                         </TableView>
                      </children></AnchorPane>
@@ -59,39 +59,60 @@
                      <children>
                         <TableView fx:id="tableAttori" layoutX="202.0" layoutY="125.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <columns>
-                              <TableColumn fx:id="attoreNome" prefWidth="165.0" text="Nome" />
-                              <TableColumn fx:id="attoreCognome" prefWidth="161.0" text="Cognome" />
-                              <TableColumn fx:id="attoreNazione" prefWidth="98.0" text="Nazione" />
-                              <TableColumn fx:id="attoreCitta" prefWidth="160.0" text="Citta" />
-                              <TableColumn fx:id="attoreDataNascita" prefWidth="150.0" text="Data Nascita" />
+                              <TableColumn fx:id="attoreNome" prefWidth="138.0" resizable="false" text="Nome" />
+                              <TableColumn fx:id="attoreCognome" prefWidth="137.0" resizable="false" text="Cognome" />
+                              <TableColumn fx:id="attoreNazione" prefWidth="97.0" resizable="false" text="Nazione" />
+                              <TableColumn fx:id="attoreCitta" prefWidth="141.0" resizable="false" text="Citta" />
+                              <TableColumn fx:id="attoreDataNascita" prefWidth="139.0" resizable="false" text="Data Nascita" />
                            </columns></TableView>
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="tabRegisti" text="Regista">
+            <Tab fx:id="tabRegisti" text="Registi">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
                      <children>
                         <TableView fx:id="tableRegisti" layoutX="217.0" layoutY="137.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                            <TableColumn fx:id="registaNome" prefWidth="181.0" text="Nome" />
-                              <TableColumn fx:id="registaCognome" prefWidth="188.0" text="Cognome" />
-                              <TableColumn fx:id="registaNazione" prefWidth="197.0" text="Nazione" />
-                              <TableColumn fx:id="registaDataNascita" prefWidth="170.0" text="Data Nascita" />
+                            <TableColumn fx:id="registaNome" prefWidth="177.0" resizable="false" text="Nome" />
+                              <TableColumn fx:id="registaCognome" prefWidth="171.0" resizable="false" text="Cognome" />
+                              <TableColumn fx:id="registaNazione" prefWidth="169.0" resizable="false" text="Nazione" />
+                              <TableColumn fx:id="registaDataNascita" prefWidth="133.0" resizable="false" text="Data Nascita" />
                           </columns>
                         </TableView>
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="tabProduttori" text="Casa Produttrice">
+            <Tab fx:id="tabProduttori" text="Case Produttrici">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
+                     <children>
+                        <ListView fx:id="listProduttori" layoutX="43.0" layoutY="42.0" prefHeight="382.0" prefWidth="290.0" />
+                        <Label layoutX="367.0" layoutY="46.0" text="ID Compagnia" />
+                        <TextField fx:id="tfIdProduttore" disable="true" editable="false" layoutX="470.0" layoutY="42.0" prefHeight="25.0" prefWidth="36.0" />
+                        <Label layoutX="410.0" layoutY="88.0" text="Nome" />
+                        <TextField fx:id="tfNomeProduttore" layoutX="470.0" layoutY="84.0" />
+                        <Label layoutX="399.0" layoutY="130.0" text="Nazione" />
+                        <TextField fx:id="tfNazioneProduttore" layoutX="470.0" layoutY="126.0" />
+                        <Label layoutX="380.0" layoutY="167.0" text="Descrizione" />
+                        <TextArea fx:id="taDescrizioneProduttore" layoutX="378.0" layoutY="200.0" prefHeight="224.0" prefWidth="256.0" wrapText="true" />
+                     </children></AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="tabGeneri" text="Genere">
+            <Tab fx:id="tabGeneri" text="Generi">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0" />
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
+                     <children>
+                        <ListView fx:id="listGeneri" layoutX="43.0" layoutY="42.0" prefHeight="382.0" prefWidth="290.0" />
+                        <Label layoutX="367.0" layoutY="46.0" text="ID Compagnia" />
+                        <TextField fx:id="tfIdGenere" disable="true" editable="false" layoutX="470.0" layoutY="42.0" prefHeight="25.0" prefWidth="36.0" />
+                        <Label layoutX="410.0" layoutY="88.0" text="Nome" />
+                        <TextField fx:id="tfNomeGenere" layoutX="470.0" layoutY="84.0" />
+                        <Label layoutX="380.0" layoutY="128.0" text="Descrizione" />
+                        <TextArea fx:id="taDescrizioneGenere" layoutX="378.0" layoutY="160.0" prefHeight="264.0" prefWidth="256.0" wrapText="true" />
+                     </children>
+                  </AnchorPane>
                </content>
             </Tab>
         </tabs>

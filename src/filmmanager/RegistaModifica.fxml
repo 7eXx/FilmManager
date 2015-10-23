@@ -9,7 +9,7 @@
 <AnchorPane id="AnchorPane" prefHeight="490.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.RegistaModificaController">
    <children>
       <Label layoutX="28.0" layoutY="28.0" text="ID Regista" />
-      <TextField fx:id="tfIdRegista" editable="false" layoutX="98.0" layoutY="23.0" prefHeight="31.0" prefWidth="49.0" />
+      <TextField fx:id="tfIdRegista" disable="true" editable="false" layoutX="98.0" layoutY="23.0" prefHeight="31.0" prefWidth="49.0" />
       <Label layoutX="188.0" layoutY="28.0" text="Data Nascita" />
       <DatePicker fx:id="dpDataNascita" layoutX="281.0" layoutY="23.0" prefHeight="31.0" prefWidth="168.0" />
       <Label layoutX="28.0" layoutY="67.0" text="Nome" />

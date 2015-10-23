@@ -10,6 +10,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,21 +19,27 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import support.Attore;
 import support.Cinema;
 import support.Film;
+import support.Genere;
+import support.Produttore;
 import support.Regista;
 
 /**
- *
+ * scena principale di tutto il programma
  * @author marco
  */
 public class FilmManagerController implements Initializable {
@@ -41,6 +49,8 @@ public class FilmManagerController implements Initializable {
     ObservableList<Film> films;
     ObservableList<Attore> attori;
     ObservableList<Regista> registi;
+    ObservableList<Produttore> produttori;
+    ObservableList<Genere> generi;
 
     @FXML
     private TabPane tabPaneInfo;
@@ -64,16 +74,23 @@ public class FilmManagerController implements Initializable {
     private TableColumn registaNome, registaCognome, registaNazione, registaDataNascita;
 
     @FXML
-    private TableView tableGeneri;
+    private ListView<Produttore> listProduttori;
     @FXML
-    private TableView tableProduttori;
+    private TextField tfIdProduttore, tfNomeProduttore, tfNazioneProduttore;
+    @FXML
+    private TextArea taDescrizioneProduttore;
+ 
+    @FXML
+    private ListView<Genere> listGeneri;
+    @FXML
+    private TextField tfIdGenere, tfNomeGenere;
+    @FXML
+    private TextArea taDescrizioneGenere;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        assert tableFilms != null : "fx:id=\"tableFilms\" was not injected: check your FXML file 'FilmManager.fxml'.";
-
-        // caricamento colonne
+        // caricamento colonne film
         filmNome.setCellValueFactory(new PropertyValueFactory("nome"));
         filmDurata.setCellValueFactory(new PropertyValueFactory("durata"));
         filmNazione.setCellValueFactory(new PropertyValueFactory("nazione"));
@@ -81,34 +98,59 @@ public class FilmManagerController implements Initializable {
         filmDataUscita.setCellValueFactory(new PropertyValueFactory("data_uscita"));
         filmVoto.setCellValueFactory(new PropertyValueFactory("voto"));
         filmNumOscar.setCellValueFactory(new PropertyValueFactory("num_oscar"));
-
+        // caricamento colonne attore
         attoreNome.setCellValueFactory(new PropertyValueFactory("nome"));
         attoreCognome.setCellValueFactory(new PropertyValueFactory("cognome"));
         attoreNazione.setCellValueFactory(new PropertyValueFactory("nazione"));
         attoreCitta.setCellValueFactory(new PropertyValueFactory("citta"));
         attoreDataNascita.setCellValueFactory(new PropertyValueFactory("data_nascita"));
-
+        // caricamento colonne regista
         registaNome.setCellValueFactory(new PropertyValueFactory("nome"));
         registaCognome.setCellValueFactory(new PropertyValueFactory("cognome"));
         registaNazione.setCellValueFactory(new PropertyValueFactory("nazione"));
         registaDataNascita.setCellValueFactory(new PropertyValueFactory("data_nascita"));
-
         // Carica i Film
         films = Cinema.getInfo(Film.class);
         tableFilms.setItems(films);
-
         // carica gli attori
         attori = Cinema.getInfo(Attore.class);
         tableAttori.setItems(attori);
-
         // carica i registi
         registi = Cinema.getInfo(Regista.class);
         tableRegisti.setItems(registi);
-
+        // carico i produttori
+        produttori = Cinema.getInfo(Produttore.class);
+        listProduttori.setItems(produttori);
+        // carico i generi
+        generi = Cinema.getInfo(Genere.class);
+        listGeneri.setItems(generi);
         // seleziona una riga
         //tableFilms.getSelectionModel().clearSelection();
+        // produttori evento cambia indice
+        listProduttori.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Produttore>() {
+            @Override
+            public void changed(ObservableValue<? extends Produttore> observable, Produttore oldValue, Produttore newValue) {
+                
+                tfIdProduttore.setText(newValue.getId()+"");
+                tfNomeProduttore.setText(newValue.getNome());
+                tfNazioneProduttore.setText(newValue.getNazione());
+                taDescrizioneProduttore.setText(newValue.getDescrizione());
+            }
+        });
+        // generi evento cambia indice
+        listGeneri.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Genere>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Genere> observable, Genere oldValue, Genere newValue) {
+                
+                tfIdGenere.setText(newValue.getId()+"");
+                tfNomeGenere.setText(newValue.getGenere());
+                taDescrizioneGenere.setText(newValue.getDescrizione());
+            }
+        });
     }
 
+    @FXML
     public void onClickModifica(ActionEvent event) throws IOException {
 
         LOG.log(Level.INFO, "valore di tabFilms selected: {0}", tabFilms.isSelected());
@@ -157,12 +199,12 @@ public class FilmManagerController implements Initializable {
                 stage.show();
             }
         } else if (tabRegisti.isSelected()) {
-            
-            if(!tableRegisti.getSelectionModel().isEmpty()){
-                
+
+            if (!tableRegisti.getSelectionModel().isEmpty()) {
+
                 int i = tableRegisti.getSelectionModel().getFocusedIndex();
                 Regista regista = registi.get(i);
-                
+
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegistaModifica.fxml"));
                 Parent root = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
@@ -173,14 +215,13 @@ public class FilmManagerController implements Initializable {
 
                 RegistaModificaController manager = fxmlLoader.<RegistaModificaController>getController();
                 manager.initData(regista, true, this);
-                
+
                 stage.show();
             }
-                
-            //TODO: inizia interfaccia modifica dei Registi
         }
     }
 
+    @FXML
     public void onClickNuovoFilm(ActionEvent event) throws IOException {
 
         if (tabPaneInfo.getSelectionModel().getSelectedItem() != tabFilms) {
@@ -200,6 +241,7 @@ public class FilmManagerController implements Initializable {
         stage.show();
     }
 
+    @FXML
     public void onClickNuovoAttore(ActionEvent event) throws IOException {
 
         if (tabPaneInfo.getSelectionModel().getSelectedItem() != tabAttori) {
@@ -219,6 +261,7 @@ public class FilmManagerController implements Initializable {
         stage.show();
     }
 
+    @FXML
     public void onClickNuovoRegista(ActionEvent event) throws IOException {
         if (tabPaneInfo.getSelectionModel().getSelectedItem() != tabRegisti) {
             tabPaneInfo.getSelectionModel().select(tabRegisti);
@@ -237,14 +280,17 @@ public class FilmManagerController implements Initializable {
         stage.show();
     }
 
+    @FXML
     public void onClickNuovoProduttore(ActionEvent event) {
         tabPaneInfo.getSelectionModel().select(tabProduttori);
     }
-    
-    public void onClickNuovoGenere(ActionEvent event){
+
+    @FXML
+    public void onClickNuovoGenere(ActionEvent event) {
         tabPaneInfo.getSelectionModel().select(tabGeneri);
     }
 
+    @FXML
     public void onClickElimina(ActionEvent event) {
 
         if (tabFilms.isSelected()) {
@@ -265,12 +311,12 @@ public class FilmManagerController implements Initializable {
                 Cinema.deleteInfo(a);
                 attori.remove(a);
             }
-        } else if (tabRegisti.isSelected()){
-            
-            if(!tableRegisti.getSelectionModel().isEmpty()){
+        } else if (tabRegisti.isSelected()) {
+
+            if (!tableRegisti.getSelectionModel().isEmpty()) {
                 int i = tableRegisti.getSelectionModel().getFocusedIndex();
                 Regista r = registi.get(i);
-                
+
                 Cinema.deleteInfo(r);
                 registi.remove(r);
             }
@@ -279,7 +325,6 @@ public class FilmManagerController implements Initializable {
 
     /**
      * aggiunge un oggetto alla relativa lista
-     *
      * @param o oggetto da aggiungere
      */
     public void insertInfo(Object o) {
@@ -290,9 +335,7 @@ public class FilmManagerController implements Initializable {
         } else if (o instanceof Attore) {
             Attore a = (Attore) o;
             attori.add(a);
-        }
-        else if (o instanceof Regista)
-        {
+        } else if (o instanceof Regista) {
             Regista r = (Regista) o;
             registi.add(r);
         }
