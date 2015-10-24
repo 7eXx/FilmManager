@@ -149,7 +149,7 @@ public class Film {
     @Override
     public String toString()
     {
-        return "Id: " + id + ", nome: " +nome + ", durata: " + durata;
+        return  nome.get() + " - " + durata.get() + " min";
     }
 
 }
