@@ -86,7 +86,7 @@ public class FilmModificaController implements Initializable {
                 film.setDurata(0);
             }
             
-            if (!tfNazione.getText().trim().equals("")) {
+            if (tfNazione.getText() != null && !tfNazione.getText().trim().equals("")) {
                 film.setNazione(tfNazione.getText());
             } else {
                 film.setNazione(null);
@@ -110,7 +110,7 @@ public class FilmModificaController implements Initializable {
                 film.setVoto(0);
             }
             
-            if (!taDescrizione.getText().trim().equals("")) {
+            if (taDescrizione.getText() != null && !taDescrizione.getText().trim().equals("")) {
                 film.setDescrizione(taDescrizione.getText());
             } else {
                 film.setDescrizione(null);

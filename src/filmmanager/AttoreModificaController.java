@@ -81,12 +81,12 @@ public class AttoreModificaController implements Initializable {
             attore.setNome(tfNome.getText().trim());
             attore.setCognome(tfCognome.getText().trim());
 
-            if (!tfNazione.getText().trim().equals("")) {
+            if (tfNazione.getText() != null && !tfNazione.getText().trim().equals("")) {
                 attore.setNazione(tfNazione.getText());
             } else {
                 attore.setNazione(null);
             }
-            if (!tfCitta.getText().trim().equals("")) {
+            if (tfCitta.getText() != null && !tfCitta.getText().trim().equals("")) {
                 attore.setCitta(tfCitta.getText());
             } else {
                 attore.setCitta(null);
@@ -98,7 +98,7 @@ public class AttoreModificaController implements Initializable {
                 attore.setData_nascita(null);
             }
 
-            if (!taBiografia.getText().trim().equals("")) {
+            if (taBiografia.getText() != null && !taBiografia.getText().trim().equals("")) {
                 attore.setBiografia(taBiografia.getText());
             } else {
                 attore.setBiografia(null);

@@ -203,7 +203,6 @@ public class Cinema {
         // aggiorna riga
         rs.updateRow();
         return true;
-
     }
 
     private static boolean insertRegista(Regista regista, Connection conn, PreparedStatement stmt, ResultSet rs) throws SQLException {
@@ -242,22 +241,82 @@ public class Cinema {
         return data;
     }
 
+    private static boolean updateProduttore(Produttore produttore, Statement stmt, ResultSet rs) throws SQLException {
+        String query = "SELECT * FROM CASA_PRODUTTRICE WHERE ID_casa = " + produttore.getId();
+        rs = stmt.executeQuery(query);
+
+        rs.first();
+        // nome
+        rs.updateString(Produttore.NOME, produttore.getNome());
+        // nazione
+        rs.updateString(Produttore.NAZIONE, produttore.getNazione());
+        // descrizione
+        rs.updateString(Produttore.DESCRIZIONE, produttore.getDescrizione());
+        // aggiornamento riga
+        rs.updateRow();
+        return true;
+    }
+
+    private static boolean insertProduttore(Produttore produttore, Connection conn, PreparedStatement stmt, ResultSet rs) throws SQLException {
+        String query = "INSERT INTO CASA_PRODUTTRICE (nome, nazione, descrizione) values (?,?,?)";
+        stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+        stmt.setString(1, produttore.getNome());
+        stmt.setString(2, produttore.getNazione());
+        stmt.setString(3, produttore.getDescrizione());
+
+        stmt.executeUpdate();
+        rs = stmt.getGeneratedKeys();
+        if (rs != null && rs.next()) {
+            produttore.setId(rs.getInt(1));
+        }
+        return true;
+    }
+
     private static ObservableList getGeneri(Statement stmt, ResultSet rs) throws SQLException {
         String query = "SELECT * FROM GENERE";
         rs = stmt.executeQuery(query);
-        
+
         ObservableList<Genere> data = FXCollections.observableArrayList();
-        while(rs.next())
-        {
+        while (rs.next()) {
             Genere g = new Genere();
-            
+
             g.setId(rs.getInt(Genere.ID));
             g.setGenere(rs.getString(Genere.GENERE));
             g.setDescrizione(rs.getString(Genere.DESCRIZIONE));
-            
+
             data.add(g);
         }
         return data;
+    }
+
+    private static boolean updateGenere(Genere genere, Statement stmt, ResultSet rs) throws SQLException {
+        String query = "SELECT * FROM GENERE WHERE ID_genere = " + genere.getId();
+        rs = stmt.executeQuery(query);
+
+        rs.first();
+        //nome
+        rs.updateString(Genere.GENERE, genere.getGenere());
+        // descrizione
+        rs.updateString(Genere.DESCRIZIONE, genere.getDescrizione());
+        // aggiornamento riga
+        rs.updateRow();
+        return true;
+    }
+
+    private static boolean insertGenere(Genere genere, Connection conn, PreparedStatement stmt, ResultSet rs) throws SQLException {
+        String query = "INSERT INTO GENERE (genere, descrizione) values (?,?)";
+        stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+        stmt.setString(1, genere.getGenere());
+        stmt.setString(2, genere.getDescrizione());
+
+        stmt.executeUpdate();
+        rs = stmt.getGeneratedKeys();
+        if (rs != null && rs.next()) {
+            genere.setId(rs.getInt(1));
+        }
+        return true;
     }
 
     public static ObservableList getInfo(Class o) {
@@ -335,6 +394,12 @@ public class Cinema {
                 } else if (obj instanceof Regista) {
                     Regista r = (Regista) obj;
                     success = updateRegista(r, stmt, rs);
+                } else if (obj instanceof Produttore) {
+                    Produttore p = (Produttore) obj;
+                    success = updateProduttore(p, stmt, rs);
+                } else if (obj instanceof Genere) {
+                    Genere g = (Genere) obj;
+                    success = updateGenere(g, stmt, rs);
                 }
             }
 
@@ -387,6 +452,12 @@ public class Cinema {
                 } else if (obj instanceof Regista) {
                     Regista r = (Regista) obj;
                     success = insertRegista(r, conn, stmt, rs);
+                } else if (obj instanceof Produttore) {
+                    Produttore p = (Produttore) obj;
+                    success = insertProduttore(p, conn, stmt, rs);
+                } else if (obj instanceof Genere) {
+                    Genere g = (Genere) obj;
+                    success = insertGenere(g, conn, stmt, rs);
                 }
             }
         } catch (SQLException ex) {
@@ -447,6 +518,20 @@ public class Cinema {
                     stmt = conn.createStatement();
                     rs = stmt.executeUpdate(query);
                     success = true;
+                } else if (obj instanceof Produttore) {
+                    Produttore produtttore = (Produttore) obj;
+                    String query = "DELETE FROM CASA_PRODUTTRICE WHERE ID_casa = " + produtttore.getId();
+                    stmt = conn.createStatement();
+                    rs = stmt.executeUpdate(query);
+                    success = true;
+                }
+                else if (obj instanceof Genere)
+                {
+                    Genere genere = (Genere) obj;
+                    String query = "DELETE FROM GENERE WHERE ID_genere = " + genere.getId();
+                    stmt = conn.createStatement();
+                    rs = stmt.executeUpdate(query);
+                    success = true;
                 }
             }
         } catch (SQLException ex) {
@@ -473,5 +558,4 @@ public class Cinema {
         }
         return success;
     }
-
 }

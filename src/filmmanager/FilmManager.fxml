@@ -16,7 +16,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#onClickNuovoAttore" text="Attore" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickNuovoRegista" text="Regista" />
                   <MenuItem mnemonicParsing="false" onAction="#onClickNuovoProduttore" text="Casa Produttrice" />
-                  <MenuItem mnemonicParsing="false" text="Genere" />
+                  <MenuItem mnemonicParsing="false" onAction="#onClickNuovoGenere" text="Genere" />
             </items>
           </Menu>
             <Menu fx:id="menuModifica" mnemonicParsing="false" text="Modifica">
@@ -89,14 +89,16 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
                      <children>
                         <ListView fx:id="listProduttori" layoutX="43.0" layoutY="42.0" prefHeight="382.0" prefWidth="290.0" />
-                        <Label layoutX="367.0" layoutY="46.0" text="ID Compagnia" />
-                        <TextField fx:id="tfIdProduttore" disable="true" editable="false" layoutX="470.0" layoutY="42.0" prefHeight="25.0" prefWidth="36.0" />
-                        <Label layoutX="410.0" layoutY="88.0" text="Nome" />
-                        <TextField fx:id="tfNomeProduttore" layoutX="470.0" layoutY="84.0" />
-                        <Label layoutX="399.0" layoutY="130.0" text="Nazione" />
-                        <TextField fx:id="tfNazioneProduttore" layoutX="470.0" layoutY="126.0" />
-                        <Label layoutX="380.0" layoutY="167.0" text="Descrizione" />
-                        <TextArea fx:id="taDescrizioneProduttore" layoutX="378.0" layoutY="200.0" prefHeight="224.0" prefWidth="256.0" wrapText="true" />
+                        <Label layoutX="367.0" layoutY="18.0" text="ID Compagnia" />
+                        <TextField fx:id="tfIdProduttore" disable="true" editable="false" layoutX="470.0" layoutY="14.0" prefHeight="25.0" prefWidth="36.0" />
+                        <Label layoutX="410.0" layoutY="60.0" text="Nome" />
+                        <TextField fx:id="tfNomeProduttore" layoutX="470.0" layoutY="56.0" />
+                        <Label layoutX="399.0" layoutY="102.0" text="Nazione" />
+                        <TextField fx:id="tfNazioneProduttore" layoutX="470.0" layoutY="98.0" />
+                        <Label layoutX="380.0" layoutY="139.0" text="Descrizione" />
+                        <TextArea fx:id="taDescrizioneProduttore" layoutX="378.0" layoutY="172.0" prefHeight="224.0" prefWidth="256.0" wrapText="true" />
+                        <Button fx:id="btConfermaProduttore" layoutX="387.0" layoutY="418.0" mnemonicParsing="false" onAction="#onClickConfermaProduttore" prefHeight="25.0" prefWidth="91.0" text="Conferma" />
+                        <Button fx:id="btNuovoProduttore" layoutX="530.0" layoutY="418.0" mnemonicParsing="false" onAction="#onClickNuovoProduttore" prefHeight="25.0" prefWidth="91.0" text="Nuovo" />
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -105,12 +107,14 @@
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
                      <children>
                         <ListView fx:id="listGeneri" layoutX="43.0" layoutY="42.0" prefHeight="382.0" prefWidth="290.0" />
-                        <Label layoutX="367.0" layoutY="46.0" text="ID Compagnia" />
-                        <TextField fx:id="tfIdGenere" disable="true" editable="false" layoutX="470.0" layoutY="42.0" prefHeight="25.0" prefWidth="36.0" />
-                        <Label layoutX="410.0" layoutY="88.0" text="Nome" />
-                        <TextField fx:id="tfNomeGenere" layoutX="470.0" layoutY="84.0" />
-                        <Label layoutX="380.0" layoutY="128.0" text="Descrizione" />
-                        <TextArea fx:id="taDescrizioneGenere" layoutX="378.0" layoutY="160.0" prefHeight="264.0" prefWidth="256.0" wrapText="true" />
+                        <Label layoutX="363.0" layoutY="18.0" text="ID Compagnia" />
+                        <TextField fx:id="tfIdGenere" disable="true" editable="false" layoutX="466.0" layoutY="14.0" prefHeight="25.0" prefWidth="36.0" />
+                        <Label layoutX="406.0" layoutY="60.0" text="Nome" />
+                        <TextField fx:id="tfNomeGenere" layoutX="466.0" layoutY="56.0" />
+                        <Label layoutX="376.0" layoutY="100.0" text="Descrizione" />
+                        <TextArea fx:id="taDescrizioneGenere" layoutX="374.0" layoutY="132.0" prefHeight="264.0" prefWidth="256.0" wrapText="true" />
+                        <Button fx:id="btConfermaProduttore1" layoutX="386.0" layoutY="412.0" mnemonicParsing="false" onAction="#onClickConfermaGenere" prefHeight="25.0" prefWidth="91.0" text="Conferma" />
+                        <Button fx:id="btNuovoProduttore1" layoutX="524.0" layoutY="412.0" mnemonicParsing="false" onAction="#onClickNuovoGenere" prefHeight="25.0" prefWidth="91.0" text="Nuovo" />
                      </children>
                   </AnchorPane>
                </content>

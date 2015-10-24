@@ -11,12 +11,10 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Border;
 import javafx.stage.Stage;
 import support.Cinema;
 import support.Regista;
@@ -59,13 +57,13 @@ public class RegistaModificaController implements Initializable {
 
             regista.setNome(tfNome.getText().trim());
 
-            if (!tfCognome.getText().trim().equals("")) {
+            if (tfCognome.getText()!= null && !tfCognome.getText().trim().equals("")) {
                 regista.setCognome(tfCognome.getText().trim());
             } else {
                 regista.setCognome(null);
             }
 
-            if (!tfNazione.getText().trim().equals("")) {
+            if (tfNazione.getText() != null && !tfNazione.getText().trim().equals("")) {
                 regista.setNazione(tfNazione.getText());
             } else {
                 regista.setNazione(null);
@@ -77,7 +75,7 @@ public class RegistaModificaController implements Initializable {
                 regista.setData_nascita(null);
             }
 
-            if (!taBiografia.getText().trim().equals("")) {
+            if (taBiografia.getText() != null && !taBiografia.getText().trim().equals("")) {
                 regista.setBiografia(taBiografia.getText());
             } else {
                 regista.setBiografia(null);

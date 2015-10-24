@@ -27,7 +27,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -40,6 +39,7 @@ import support.Regista;
 
 /**
  * scena principale di tutto il programma
+ *
  * @author marco
  */
 public class FilmManagerController implements Initializable {
@@ -79,7 +79,7 @@ public class FilmManagerController implements Initializable {
     private TextField tfIdProduttore, tfNomeProduttore, tfNazioneProduttore;
     @FXML
     private TextArea taDescrizioneProduttore;
- 
+
     @FXML
     private ListView<Genere> listGeneri;
     @FXML
@@ -130,22 +130,25 @@ public class FilmManagerController implements Initializable {
         listProduttori.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Produttore>() {
             @Override
             public void changed(ObservableValue<? extends Produttore> observable, Produttore oldValue, Produttore newValue) {
-                
-                tfIdProduttore.setText(newValue.getId()+"");
-                tfNomeProduttore.setText(newValue.getNome());
-                tfNazioneProduttore.setText(newValue.getNazione());
-                taDescrizioneProduttore.setText(newValue.getDescrizione());
+
+                if (newValue != null) {
+                    tfIdProduttore.setText(newValue.getId() + "");
+                    tfNomeProduttore.setText(newValue.getNome());
+                    tfNazioneProduttore.setText(newValue.getNazione());
+                    taDescrizioneProduttore.setText(newValue.getDescrizione());
+                }
             }
         });
         // generi evento cambia indice
         listGeneri.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Genere>() {
-
             @Override
             public void changed(ObservableValue<? extends Genere> observable, Genere oldValue, Genere newValue) {
-                
-                tfIdGenere.setText(newValue.getId()+"");
-                tfNomeGenere.setText(newValue.getGenere());
-                taDescrizioneGenere.setText(newValue.getDescrizione());
+
+                if (newValue != null) {
+                    tfIdGenere.setText(newValue.getId() + "");
+                    tfNomeGenere.setText(newValue.getGenere());
+                    taDescrizioneGenere.setText(newValue.getDescrizione());
+                }
             }
         });
     }
@@ -282,12 +285,103 @@ public class FilmManagerController implements Initializable {
 
     @FXML
     public void onClickNuovoProduttore(ActionEvent event) {
+        // seleziona tab produttore
         tabPaneInfo.getSelectionModel().select(tabProduttori);
+        // pulisce tutti i campi
+        listProduttori.getSelectionModel().clearSelection();
+        tfIdProduttore.clear();
+        tfNomeProduttore.clear();
+        tfNazioneProduttore.clear();
+        taDescrizioneProduttore.clear();
     }
 
     @FXML
     public void onClickNuovoGenere(ActionEvent event) {
+        // selezione tab genere
         tabPaneInfo.getSelectionModel().select(tabGeneri);
+        // pulisce tutti i campi
+        listGeneri.getSelectionModel().clearSelection();
+        tfIdGenere.clear();
+        tfNomeGenere.clear();
+        taDescrizioneGenere.clear();
+    }
+
+    @FXML
+    public void onClickConfermaProduttore(ActionEvent event) {
+
+        // se diverso da vuoto procede
+        if (!tfNomeProduttore.getText().trim().equals("")) {
+
+            boolean modifica = !listProduttori.getSelectionModel().isEmpty();
+            Produttore p;
+            // se indice selezionato -> modifica dalla lista
+            if (modifica) {
+                p = listProduttori.getSelectionModel().getSelectedItem();
+            } // altrimenti inserimento nuovo
+            else {
+                p = new Produttore();
+            }
+
+            // imposta il nome
+            p.setNome(tfNomeProduttore.getText());
+            // imposta la nazione
+            if (tfNazioneProduttore.getText() != null && !tfNazioneProduttore.getText().trim().equals("")) {
+                p.setNazione(tfNazioneProduttore.getText());
+            } else {
+                p.setNazione(null);
+            }
+            // imposta la descrizione
+            if (taDescrizioneProduttore.getText() != null && !taDescrizioneProduttore.getText().trim().equals("")) {
+                p.setDescrizione(taDescrizioneProduttore.getText());
+            } else {
+                p.setDescrizione(null);
+            }
+
+            // indice selezionato aggiorna altrimenti inserisce
+            if (modifica) {
+                Cinema.updateInfo(p);
+                listProduttori.refresh();
+            } else {
+                Cinema.insertInfo(p);
+                produttori.add(p);
+            }
+        }
+    }
+
+    @FXML
+    public void onClickConfermaGenere(ActionEvent event) {
+
+        // se diverso da vuoto procede
+        if (!tfNomeGenere.getText().trim().equals("")) {
+
+            boolean modifica = !listGeneri.getSelectionModel().isEmpty();
+            Genere g;
+            // se indice selezionato -> modifica dalla lista
+            if (modifica) {
+                g = listGeneri.getSelectionModel().getSelectedItem();
+            } // altrimenti inserimento nuovo
+            else {
+                g = new Genere();
+            }
+
+            // imposta il nome
+            g.setGenere(tfNomeGenere.getText());
+            // imposta la descrizione
+            if (taDescrizioneGenere.getText() != null && !taDescrizioneGenere.getText().trim().equals("")) {
+                g.setDescrizione(taDescrizioneGenere.getText());
+            } else {
+                g.setDescrizione(null);
+            }
+
+            // indice selezionato aggiorna altrimenti inserisce
+            if (modifica) {
+                Cinema.updateInfo(g);
+                listGeneri.refresh();
+            } else {
+                Cinema.insertInfo(g);
+                generi.add(g);
+            }
+        }
     }
 
     @FXML
@@ -320,6 +414,22 @@ public class FilmManagerController implements Initializable {
                 Cinema.deleteInfo(r);
                 registi.remove(r);
             }
+        } else if (tabProduttori.isSelected()) {
+            if (!listProduttori.getSelectionModel().isEmpty()) {
+                int i = listProduttori.getSelectionModel().getSelectedIndex();
+                Produttore p = produttori.get(i);
+
+                Cinema.deleteInfo(p);
+                produttori.remove(p);
+            }
+        } else if (tabGeneri.isSelected()) {
+            if (!listGeneri.getSelectionModel().isEmpty()) {
+                int i = listGeneri.getSelectionModel().getSelectedIndex();
+                Genere g = generi.get(i);
+
+                Cinema.deleteInfo(g);
+                generi.remove(g);
+            }
         }
     }
 
@@ -338,6 +448,12 @@ public class FilmManagerController implements Initializable {
         } else if (o instanceof Regista) {
             Regista r = (Regista) o;
             registi.add(r);
+        } else if (o instanceof Produttore) {
+            Produttore p = (Produttore) o;
+            produttori.add(p);
+        } else if (o instanceof Genere) {
+            Genere g = (Genere) o;
+            generi.add(g);
         }
     }
 
