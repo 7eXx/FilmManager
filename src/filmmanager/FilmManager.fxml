@@ -106,8 +106,9 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
                      <children>
-                        <ListView fx:id="listGeneri" layoutX="43.0" layoutY="42.0" prefHeight="382.0" prefWidth="290.0" />
-                        <Label layoutX="363.0" layoutY="18.0" text="ID Compagnia" />
+                        <ListView fx:id="listGeneri" layoutX="43.0" layoutY="42.0" prefHeight="161.0" prefWidth="290.0" />
+                        <ListView fx:id="listGeneriFilm" layoutX="43.0" layoutY="225.0" prefHeight="171.0" prefWidth="290.0" />
+                        <Label layoutX="363.0" layoutY="18.0" text="ID Genere" />
                         <TextField fx:id="tfIdGenere" disable="true" editable="false" layoutX="466.0" layoutY="14.0" prefHeight="25.0" prefWidth="36.0" />
                         <Label layoutX="406.0" layoutY="60.0" text="Nome" />
                         <TextField fx:id="tfNomeGenere" layoutX="466.0" layoutY="56.0" />

@@ -26,9 +26,20 @@ public class Cinema {
     static final String PASS = "password";
     static final String DBURL = "jdbc:sqlserver://localhost:1433;databaseName=" + DB;
 
-    private static ObservableList getFilms(Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getFilms(Object o, Statement stmt, ResultSet rs) throws SQLException {
 
         String query = "SELECT * FROM FILM";
+
+        if (o != null) {
+            if (o instanceof Genere) {
+                Genere g = (Genere) o;
+                query = "SELECT Film." + Film.ID + "," + Film.NOME + "," + Film.DURATA + "," + Film.NAZIONE + ","
+                        + Film.BUDGET + "," + Film.DATA_USCITA + "," + Film.VOTO + "," + Film.DESCRIZIONE + "," + Film.NUM_OSCAR
+                        + " FROM Film INNER JOIN Classificazione ON Film.ID_film = Classificazione.ID_film"
+                        + " WHERE ID_genere = " + g.getId();
+            }
+        }
+
         rs = stmt.executeQuery(query);
 
         ObservableList<Film> data = FXCollections.observableArrayList();
@@ -319,7 +330,7 @@ public class Cinema {
         return true;
     }
 
-    public static ObservableList getInfo(Class o) {
+    public static ObservableList getInfo(Class c, Object o) {
 
         Connection conn = null;
         Statement stmt = null;
@@ -333,15 +344,19 @@ public class Cinema {
 
                 stmt = conn.createStatement();
 
-                if (o.equals(Film.class)) {
-                    data = getFilms(stmt, rs);
-                } else if (o.equals(Attore.class)) {
+                if (c.equals(Film.class)) {
+                    if (o != null) {
+                        data = getFilms(o, stmt, rs);
+                    } else {
+                        data = getFilms(null, stmt, rs);
+                    }
+                } else if (c.equals(Attore.class)) {
                     data = getAttori(stmt, rs);
-                } else if (o.equals(Regista.class)) {
+                } else if (c.equals(Regista.class)) {
                     data = getRegisti(stmt, rs);
-                } else if (o.equals(Produttore.class)) {
+                } else if (c.equals(Produttore.class)) {
                     data = getProduttori(stmt, rs);
-                } else if (o.equals(Genere.class)) {
+                } else if (c.equals(Genere.class)) {
                     data = getGeneri(stmt, rs);
                 }
             }
@@ -524,9 +539,7 @@ public class Cinema {
                     stmt = conn.createStatement();
                     rs = stmt.executeUpdate(query);
                     success = true;
-                }
-                else if (obj instanceof Genere)
-                {
+                } else if (obj instanceof Genere) {
                     Genere genere = (Genere) obj;
                     String query = "DELETE FROM GENERE WHERE ID_genere = " + genere.getId();
                     stmt = conn.createStatement();

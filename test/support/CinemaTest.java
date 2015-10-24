@@ -47,7 +47,7 @@ public class CinemaTest {
         System.out.println("getInfo");
         Class o = Genere.class;
         ObservableList expResult = null;
-        ObservableList result = Cinema.getInfo(o);
+        ObservableList result = Cinema.getInfo(o, null);
        
         for (Iterator iterator = result.iterator(); iterator.hasNext();) {
             Object next = iterator.next();
@@ -97,5 +97,7 @@ public class CinemaTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+    
+    
     
 }

@@ -87,6 +87,9 @@ public class FilmManagerController implements Initializable {
     @FXML
     private TextArea taDescrizioneGenere;
 
+    @FXML
+    private ListView<Film> listGeneriFilm;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -110,19 +113,19 @@ public class FilmManagerController implements Initializable {
         registaNazione.setCellValueFactory(new PropertyValueFactory("nazione"));
         registaDataNascita.setCellValueFactory(new PropertyValueFactory("data_nascita"));
         // Carica i Film
-        films = Cinema.getInfo(Film.class);
+        films = Cinema.getInfo(Film.class, null);
         tableFilms.setItems(films);
         // carica gli attori
-        attori = Cinema.getInfo(Attore.class);
+        attori = Cinema.getInfo(Attore.class, null);
         tableAttori.setItems(attori);
         // carica i registi
-        registi = Cinema.getInfo(Regista.class);
+        registi = Cinema.getInfo(Regista.class, null);
         tableRegisti.setItems(registi);
         // carico i produttori
-        produttori = Cinema.getInfo(Produttore.class);
+        produttori = Cinema.getInfo(Produttore.class, null);
         listProduttori.setItems(produttori);
         // carico i generi
-        generi = Cinema.getInfo(Genere.class);
+        generi = Cinema.getInfo(Genere.class, null);
         listGeneri.setItems(generi);
         // seleziona una riga
         //tableFilms.getSelectionModel().clearSelection();
@@ -148,6 +151,14 @@ public class FilmManagerController implements Initializable {
                     tfIdGenere.setText(newValue.getId() + "");
                     tfNomeGenere.setText(newValue.getGenere());
                     taDescrizioneGenere.setText(newValue.getDescrizione());
+
+                    ObservableList<Film> f = Cinema.getInfo(Film.class, newValue);
+                    listGeneriFilm.setItems(f);
+                } else {
+                    tfIdGenere.clear();
+                    tfNomeGenere.clear();
+                    taDescrizioneGenere.clear();
+                    listGeneriFilm.setItems(null);
                 }
             }
         });
@@ -301,9 +312,7 @@ public class FilmManagerController implements Initializable {
         tabPaneInfo.getSelectionModel().select(tabGeneri);
         // pulisce tutti i campi
         listGeneri.getSelectionModel().clearSelection();
-        tfIdGenere.clear();
-        tfNomeGenere.clear();
-        taDescrizioneGenere.clear();
+
     }
 
     @FXML
@@ -435,6 +444,7 @@ public class FilmManagerController implements Initializable {
 
     /**
      * aggiunge un oggetto alla relativa lista
+     *
      * @param o oggetto da aggiungere
      */
     public void insertInfo(Object o) {
