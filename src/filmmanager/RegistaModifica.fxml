@@ -19,8 +19,10 @@
       <Label layoutX="28.0" layoutY="152.0" text="Nazione" />
       <TextField fx:id="tfNazione" layoutX="98.0" layoutY="147.0" prefHeight="31.0" prefWidth="351.0" />
       <Label layoutX="26.0" layoutY="186.0" text="Biografia" />
-      <TextArea fx:id="taBiografia" layoutX="26.0" layoutY="215.0" prefHeight="200.0" prefWidth="425.0" wrapText="true" />
+      <TextArea fx:id="taBiografia" layoutX="26.0" layoutY="215.0" prefHeight="200.0" prefWidth="205.0" wrapText="true" />
       <Button fx:id="btConferma" layoutX="58.0" layoutY="429.0" mnemonicParsing="false" onAction="#onClickConferma" prefHeight="41.0" prefWidth="129.0" text="Conferma" />
       <Button fx:id="btAnnulla" layoutX="280.0" layoutY="429.0" mnemonicParsing="false" onAction="#onClickAnnulla" prefHeight="41.0" prefWidth="129.0" text="Annulla" />
+      <Label layoutX="245.0" layoutY="186.0" text="Film diretti" />
+      <ListView fx:id="listRegistaFilm" layoutX="245.0" layoutY="215.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

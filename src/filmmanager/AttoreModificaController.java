@@ -8,16 +8,19 @@ package filmmanager;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import support.Attore;
 import support.Cinema;
+import support.Film;
 
 /**
  * FXML Controller class
@@ -37,6 +40,8 @@ public class AttoreModificaController implements Initializable {
 
     @FXML
     private TextArea taBiografia;
+    @FXML
+    private ListView<Film> listAttoreFilm;
 
     private boolean modifica;
     private FilmManagerController main;
@@ -68,6 +73,9 @@ public class AttoreModificaController implements Initializable {
             }
 
             taBiografia.setText(attore.getBiografia());
+            
+            ObservableList<Film> f = Cinema.getInfo(Film.class, attore);
+            listAttoreFilm.setItems(f);
         }
     }
 

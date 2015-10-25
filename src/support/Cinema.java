@@ -33,10 +33,33 @@ public class Cinema {
         if (o != null) {
             if (o instanceof Genere) {
                 Genere g = (Genere) o;
-                query = "SELECT Film." + Film.ID + "," + Film.NOME + "," + Film.DURATA + "," + Film.NAZIONE + ","
+                query = "SELECT FILM." + Film.ID + "," + Film.NOME + "," + Film.DURATA + "," + Film.NAZIONE + ","
                         + Film.BUDGET + "," + Film.DATA_USCITA + "," + Film.VOTO + "," + Film.DESCRIZIONE + "," + Film.NUM_OSCAR
-                        + " FROM Film INNER JOIN Classificazione ON Film.ID_film = Classificazione.ID_film"
+                        + " FROM FILM INNER JOIN Classificazione ON Film.ID_film = Classificazione.ID_film"
                         + " WHERE ID_genere = " + g.getId();
+            }
+            else if (o instanceof Produttore)
+            {
+                Produttore p = (Produttore) o;
+                query = "SELECT FILM." + Film.ID + "," + Film.NOME + "," + Film.DURATA + "," + Film.NAZIONE + ","
+                        + Film.BUDGET + "," + Film.DATA_USCITA + "," + Film.VOTO + "," + Film.DESCRIZIONE + "," + Film.NUM_OSCAR
+                        + " FROM FILM INNER JOIN PRODUZIONE ON Film.ID_film = PRODUZIONE.ID_film"
+                        + " WHERE ID_casa = " + p.getId();
+            }
+            else if (o instanceof Regista)
+            {
+                Regista r = (Regista) o;
+                query = "SELECT FILM." + Film.ID + "," + Film.NOME + "," + Film.DURATA + "," + Film.NAZIONE + ","
+                        + Film.BUDGET + "," + Film.DATA_USCITA + "," + Film.VOTO + "," + Film.DESCRIZIONE + "," + Film.NUM_OSCAR
+                        + " FROM FILM INNER JOIN DIREZIONE ON FILM.ID_film = DIREZIONE.ID_film"
+                        + " WHERE ID_regista = " + r.getId();
+            } else if (o instanceof Attore)
+            {
+                Attore a = (Attore) o;
+                query = "SELECT FILM." + Film.ID + "," + Film.NOME + "," + Film.DURATA + "," + Film.NAZIONE + ","
+                        + Film.BUDGET + "," + Film.DATA_USCITA + "," + Film.VOTO + "," + Film.DESCRIZIONE + "," + Film.NUM_OSCAR
+                        + " FROM FILM INNER JOIN PARTECIPAZIONE ON FILM.ID_film = PARTECIPAZIONE.ID_film"
+                        + " WHERE ID_attore = " + a.getId();
             }
         }
 
@@ -330,6 +353,12 @@ public class Cinema {
         return true;
     }
 
+    /**
+     * recupero delle informazioni secondo alcuni paramentri
+     * @param c cosa estrarre
+     * @param o secondo quali informazione ricercare
+     * @return lista di oggetti
+     */
     public static ObservableList getInfo(Class c, Object o) {
 
         Connection conn = null;

@@ -88,7 +88,7 @@ public class FilmManagerController implements Initializable {
     private TextArea taDescrizioneGenere;
 
     @FXML
-    private ListView<Film> listGeneriFilm;
+    private ListView<Film> listGeneriFilm, listProduttoriFilm;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -139,6 +139,15 @@ public class FilmManagerController implements Initializable {
                     tfNomeProduttore.setText(newValue.getNome());
                     tfNazioneProduttore.setText(newValue.getNazione());
                     taDescrizioneProduttore.setText(newValue.getDescrizione());
+
+                    ObservableList<Film> f = Cinema.getInfo(Film.class, newValue);
+                    listProduttoriFilm.setItems(f);
+                } else {
+                    tfIdProduttore.clear();
+                    tfNomeProduttore.clear();
+                    tfNazioneProduttore.clear();
+                    taDescrizioneProduttore.clear();
+                    listProduttoriFilm.setItems(null);
                 }
             }
         });
@@ -300,10 +309,6 @@ public class FilmManagerController implements Initializable {
         tabPaneInfo.getSelectionModel().select(tabProduttori);
         // pulisce tutti i campi
         listProduttori.getSelectionModel().clearSelection();
-        tfIdProduttore.clear();
-        tfNomeProduttore.clear();
-        tfNazioneProduttore.clear();
-        taDescrizioneProduttore.clear();
     }
 
     @FXML

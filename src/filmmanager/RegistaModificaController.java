@@ -8,15 +8,18 @@ package filmmanager;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import support.Cinema;
+import support.Film;
 import support.Regista;
 
 /**
@@ -38,6 +41,8 @@ public class RegistaModificaController implements Initializable {
     private DatePicker dpDataNascita;
     @FXML
     private Button btConferma, btAnnulla;
+    @FXML
+    private ListView<Film> listRegistaFilm;
 
     /**
      * Initializes the controller class.
@@ -120,6 +125,9 @@ public class RegistaModificaController implements Initializable {
             if (regista.getBiografia() != null) {
                 taBiografia.setText(regista.getBiografia());
             }
+            
+            ObservableList<Film> f = Cinema.getInfo(Film.class, regista);
+            listRegistaFilm.setItems(f);
         }
     }
 }
