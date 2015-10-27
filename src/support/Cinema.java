@@ -199,9 +199,18 @@ public class Cinema {
         return true;
     }
 
-    private static ObservableList getRegisti(Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getRegisti(Object o, Statement stmt, ResultSet rs) throws SQLException {
 
         String query = "SELECT * FROM REGISTA";
+        if (o != null) {
+            if (o instanceof Film) {
+                Film f = (Film) o;
+                query = "SELECT REGISTA." + Regista.ID + "," + Regista.NOME + "," + Regista.COGNOME + "," + Regista.NAZIONE + ","
+                        + Regista.DATA_NASCITA + "," + Regista.BIOGRAFIA + ", oscar"
+                        + " FROM  REGISTA INNER JOIN DIREZIONE ON DIREZIONE.ID_regista = REGISTA.ID_regista"
+                        + " WHERE ID_film = " + f.getId();
+            }
+        }
         rs = stmt.executeQuery(query);
         ObservableList<Regista> data = FXCollections.observableArrayList();
 
@@ -407,7 +416,11 @@ public class Cinema {
                         data = getAttori(null, stmt, rs);
                     }
                 } else if (c.equals(Regista.class)) {
-                    data = getRegisti(stmt, rs);
+                    if (o != null) {
+                        data = getRegisti(o, stmt, rs);
+                    } else {
+                        data = getRegisti(null, stmt, rs);
+                    }
                 } else if (c.equals(Produttore.class)) {
                     if (o != null) {
                         data = getProduttori(o, stmt, rs);
@@ -417,9 +430,9 @@ public class Cinema {
                 } else if (c.equals(Genere.class)) {
                     if (o != null) {
                         data = getGeneri(o, stmt, rs);
-                    }
-                    else
+                    } else {
                         data = getGeneri(null, stmt, rs);
+                    }
                 }
             }
         } catch (SQLException ex) {

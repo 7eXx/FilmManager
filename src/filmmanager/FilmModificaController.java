@@ -37,6 +37,8 @@ public class FilmModificaController implements Initializable {
     boolean modifica;
     FilmManagerController main;
     
+    Regista rlast;
+    
     @FXML
     private TextField tfIdFilm, tfNome, tfDurata, tfNazione, tfVoto, tfBudget, tfNumOscar;
     @FXML
@@ -53,7 +55,6 @@ public class FilmModificaController implements Initializable {
     private ListView<Genere> listGeneri;
     @FXML
     private ChoiceBox<Regista> choiceRegista;
-            
     
     public void initData(Film film, boolean modifica, FilmManagerController manager) {
         
@@ -85,6 +86,14 @@ public class FilmModificaController implements Initializable {
             listAttori.setItems(Cinema.getInfo(Attore.class, film));
             listGeneri.setItems(Cinema.getInfo(Genere.class, film));
             listProduttori.setItems(Cinema.getInfo(Produttore.class, film));
+            
+            Regista r = (Regista) Cinema.getInfo(Regista.class, film).get(0);
+            boolean find = false;
+            for (int i = 0; i < choiceRegista.getItems().size() && !find; i++) {
+                if(choiceRegista.getItems().get(i).getId() == r.getId())
+                    choiceRegista.getSelectionModel().select(i);
+            }
+           
         }
     }
     
@@ -152,7 +161,8 @@ public class FilmModificaController implements Initializable {
                 
                 Cinema.insertInfo(film);
                 main.insertInfo(film);
-            }
+            }  
+            
             
             Stage stage = (Stage) btConferma.getScene().getWindow();
             stage.close();
