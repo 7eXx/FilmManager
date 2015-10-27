@@ -105,7 +105,7 @@ public class Regista {
     @Override
     public String toString() {
         
-        return nome + " " + cognome + " - " + nazione;
+        return nome.get() + " " + cognome.get();
     }
     
     

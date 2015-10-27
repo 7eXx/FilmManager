@@ -77,7 +77,7 @@ public class Produttore {
     @Override
     public String toString()
     {
-        return nome.get() + " - " + nazione.get();
+        return nome.get();
     }
     
 }

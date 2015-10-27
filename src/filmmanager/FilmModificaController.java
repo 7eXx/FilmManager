@@ -13,12 +13,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import support.Attore;
 import support.Cinema;
 import support.Film;
+import support.Genere;
+import support.Produttore;
+import support.Regista;
 
 /**
  * FXML Controller class
@@ -39,12 +45,24 @@ public class FilmModificaController implements Initializable {
     private TextArea taDescrizione;
     @FXML
     private Button btConferma, btAnnulla;
+    @FXML
+    private ListView<Attore> listAttori;
+    @FXML
+    private ListView<Produttore> listProduttori;
+    @FXML
+    private ListView<Genere> listGeneri;
+    @FXML
+    private ChoiceBox<Regista> choiceRegista;
+            
     
     public void initData(Film film, boolean modifica, FilmManagerController manager) {
         
         this.modifica = modifica;
         this.film = film;
         this.main = manager;
+        
+        choiceRegista.setItems(Cinema.getInfo(Regista.class, null));
+        
         if (modifica) {
             
             tfIdFilm.setText(film.getId() + "");
@@ -63,6 +81,10 @@ public class FilmModificaController implements Initializable {
             tfVoto.setText(film.getVoto() + "");
             taDescrizione.setText(film.getDescrizione());
             tfNumOscar.setText(film.getNum_oscar() + "");
+            
+            listAttori.setItems(Cinema.getInfo(Attore.class, film));
+            listGeneri.setItems(Cinema.getInfo(Genere.class, film));
+            listProduttori.setItems(Cinema.getInfo(Produttore.class, film));
         }
     }
     

@@ -119,7 +119,7 @@ public class Attore {
     @Override
     public String toString()
     {
-        return nome + " " + cognome + " - " + nazione + " - " + citta;
+        return nome.get() + " " + cognome.get();
     }
     
 }

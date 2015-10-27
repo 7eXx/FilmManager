@@ -6,27 +6,50 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="490.0" prefWidth="470.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.FilmModificaController">
+<AnchorPane id="AnchorPane" prefHeight="516.0" prefWidth="618.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.FilmModificaController">
    <children>
-      <Label layoutX="24.0" layoutY="32.0" text="ID Film" />
-      <TextField fx:id="tfIdFilm" disable="true" editable="false" layoutX="84.0" layoutY="27.0" prefHeight="31.0" prefWidth="49.0" />
-      <Label layoutX="184.0" layoutY="32.0" text="Data Uscita" />
-      <DatePicker fx:id="dpDataUscita" layoutX="277.0" layoutY="27.0" prefHeight="31.0" prefWidth="170.0" />
-      <Label layoutX="24.0" layoutY="71.0" text="Nome" />
-      <TextField fx:id="tfNome" layoutX="86.0" layoutY="66.0" prefHeight="31.0" prefWidth="361.0" />
-      <Label layoutX="24.0" layoutY="113.0" text="Nazione" />
-      <TextField fx:id="tfNazione" layoutX="84.0" layoutY="108.0" prefHeight="31.0" prefWidth="122.0" />
-      <Label layoutX="235.0" layoutY="113.0" text="Voto" />
-      <TextField fx:id="tfVoto" layoutX="278.0" layoutY="108.0" prefHeight="31.0" prefWidth="47.0" />
-      <Label layoutX="359.0" layoutY="113.0" text="Oscar" />
-      <TextField fx:id="tfNumOscar" layoutX="403.0" layoutY="108.0" prefHeight="31.0" prefWidth="45.0" />
-      <Label layoutX="22.0" layoutY="154.0" text="Durata" />
-      <TextField fx:id="tfDurata" layoutX="84.0" layoutY="149.0" prefHeight="31.0" prefWidth="89.0" />
-      <Label layoutX="221.0" layoutY="154.0" text="Budget" />
-      <TextField fx:id="tfBudget" layoutX="277.0" layoutY="149.0" prefHeight="31.0" prefWidth="170.0" />
-      <Label layoutX="22.0" layoutY="189.0" text="Descrizione" />
-      <TextArea fx:id="taDescrizione" layoutX="22.0" layoutY="219.0" prefHeight="200.0" prefWidth="425.0" wrapText="true" />
-      <Button fx:id="btConferma" layoutX="54.0" layoutY="433.0" mnemonicParsing="false" onAction="#onClickConferma" prefHeight="41.0" prefWidth="129.0" text="Conferma" />
-      <Button fx:id="btAnnulla" layoutX="276.0" layoutY="433.0" mnemonicParsing="false" onAction="#onClickAnnulla" prefHeight="41.0" prefWidth="129.0" text="Annulla" />
+      <Label layoutX="24.0" layoutY="53.0" text="ID Film" />
+      <TextField fx:id="tfIdFilm" disable="true" editable="false" layoutX="84.0" layoutY="48.0" prefHeight="31.0" prefWidth="49.0" />
+      <Label layoutX="184.0" layoutY="53.0" text="Data Uscita" />
+      <DatePicker fx:id="dpDataUscita" layoutX="277.0" layoutY="48.0" prefHeight="31.0" prefWidth="170.0" />
+      <Label layoutX="24.0" layoutY="92.0" text="Nome" />
+      <TextField fx:id="tfNome" layoutX="86.0" layoutY="87.0" prefHeight="31.0" prefWidth="361.0" />
+      <Label layoutX="24.0" layoutY="134.0" text="Nazione" />
+      <TextField fx:id="tfNazione" layoutX="84.0" layoutY="129.0" prefHeight="31.0" prefWidth="122.0" />
+      <Label layoutX="235.0" layoutY="134.0" text="Voto" />
+      <TextField fx:id="tfVoto" layoutX="278.0" layoutY="129.0" prefHeight="31.0" prefWidth="47.0" />
+      <Label layoutX="359.0" layoutY="134.0" text="Oscar" />
+      <TextField fx:id="tfNumOscar" layoutX="403.0" layoutY="129.0" prefHeight="31.0" prefWidth="45.0" />
+      <Label layoutX="22.0" layoutY="175.0" text="Durata" />
+      <TextField fx:id="tfDurata" layoutX="84.0" layoutY="170.0" prefHeight="31.0" prefWidth="89.0" />
+      <Label layoutX="221.0" layoutY="175.0" text="Budget" />
+      <TextField fx:id="tfBudget" layoutX="277.0" layoutY="170.0" prefHeight="31.0" prefWidth="170.0" />
+      <Label layoutX="22.0" layoutY="210.0" text="Descrizione" />
+      <TextArea fx:id="taDescrizione" layoutX="22.0" layoutY="240.0" prefHeight="200.0" prefWidth="191.0" wrapText="true" />
+      <Button fx:id="btConferma" layoutX="54.0" layoutY="454.0" mnemonicParsing="false" onAction="#onClickConferma" prefHeight="41.0" prefWidth="129.0" text="Conferma" />
+      <Button fx:id="btAnnulla" layoutX="276.0" layoutY="454.0" mnemonicParsing="false" onAction="#onClickAnnulla" prefHeight="41.0" prefWidth="129.0" text="Annulla" />
+      <ListView fx:id="listAttori" layoutX="256.0" layoutY="301.0" prefHeight="127.0" prefWidth="170.0" />
+      <ListView fx:id="listProduttori" layoutX="466.0" layoutY="274.0" prefHeight="213.0" prefWidth="139.0" />
+      <ListView fx:id="listGeneri" layoutX="466.0" layoutY="48.0" prefHeight="193.0" prefWidth="139.0" />
+      <ChoiceBox fx:id="choiceRegista" layoutX="256.0" layoutY="241.0" prefHeight="25.0" prefWidth="170.0" />
+      <MenuBar prefHeight="25.0" prefWidth="622.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
    </children>
 </AnchorPane>
