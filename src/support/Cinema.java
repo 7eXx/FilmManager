@@ -189,7 +189,7 @@ public class Cinema {
         stmt.setString(4, attore.getCitta());
         stmt.setString(5, attore.getData_nascita());
         stmt.setString(6, attore.getBiografia());
-
+        
         stmt.executeUpdate();
         rs = stmt.getGeneratedKeys();
 

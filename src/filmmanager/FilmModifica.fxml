@@ -8,6 +8,25 @@
 
 <AnchorPane id="AnchorPane" prefHeight="516.0" prefWidth="618.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.FilmModificaController">
    <children>
+      <MenuBar prefHeight="25.0" prefWidth="622.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
       <Label layoutX="24.0" layoutY="53.0" text="ID Film" />
       <TextField fx:id="tfIdFilm" disable="true" editable="false" layoutX="84.0" layoutY="48.0" prefHeight="31.0" prefWidth="49.0" />
       <Label layoutX="184.0" layoutY="53.0" text="Data Uscita" />
@@ -29,27 +48,10 @@
       <Button fx:id="btConferma" layoutX="54.0" layoutY="454.0" mnemonicParsing="false" onAction="#onClickConferma" prefHeight="41.0" prefWidth="129.0" text="Conferma" />
       <Button fx:id="btAnnulla" layoutX="276.0" layoutY="454.0" mnemonicParsing="false" onAction="#onClickAnnulla" prefHeight="41.0" prefWidth="129.0" text="Annulla" />
       <ListView fx:id="listAttori" layoutX="256.0" layoutY="301.0" prefHeight="127.0" prefWidth="170.0" />
-      <ListView fx:id="listProduttori" layoutX="466.0" layoutY="274.0" prefHeight="213.0" prefWidth="139.0" />
+      <ListView fx:id="listProduttori" layoutX="466.0" layoutY="294.0" prefHeight="193.0" prefWidth="139.0" />
       <ListView fx:id="listGeneri" layoutX="466.0" layoutY="48.0" prefHeight="193.0" prefWidth="139.0" />
-      <ChoiceBox fx:id="choiceRegista" layoutX="256.0" layoutY="241.0" prefHeight="25.0" prefWidth="170.0" />
-      <MenuBar prefHeight="25.0" prefWidth="622.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
+      <ChoiceBox fx:id="choiceRegista" layoutX="256.0" layoutY="240.0" prefHeight="25.0" prefWidth="170.0" />
+      <Label layoutX="256.0" layoutY="219.0" text="Descrizione" />
+      <CheckBox layoutX="499.0" layoutY="250.0" mnemonicParsing="false" text="Oscar" />
    </children>
 </AnchorPane>

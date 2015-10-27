@@ -93,7 +93,6 @@ public class FilmModificaController implements Initializable {
                 if(choiceRegista.getItems().get(i).getId() == r.getId())
                     choiceRegista.getSelectionModel().select(i);
             }
-           
         }
     }
     
