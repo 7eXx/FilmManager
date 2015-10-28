@@ -290,7 +290,7 @@ public class Cinema {
                     query = "SELECT * FROM CASA_PRODUTTRICE"
                             + " WHERE CASA_PRODUTTRICE.ID_casa NOT IN"
                             + " (SELECT CASA_PRODUTTRICE.ID_casa FROM PRODUZIONE INNER JOIN CASA_PRODUTTRICE"
-                            + " ON CASA.ID_casa = PRODUZIONE.ID_casa WHERE ID_film = " + f.getId() + ")";
+                            + " ON CASA_PRODUTTRICE.ID_casa = PRODUZIONE.ID_casa WHERE ID_film = " + f.getId() + ")";
                 }
             }
         }
@@ -352,7 +352,7 @@ public class Cinema {
                         + " FROM GENERE INNER JOIN CLASSIFICAZIONE ON GENERE.ID_genere = CLASSIFICAZIONE.ID_genere"
                         + " WHERE ID_film = " + f.getId();
                 } else {
-                    query = "SELECT * GENERE"
+                    query = "SELECT * FROM GENERE"
                             + " WHERE GENERE.ID_genere NOT IN"
                             + " (SELECT GENERE.ID_genere FROM CLASSIFICAZIONE INNER JOIN GENERE"
                             + " ON GENERE.ID_genere = CLASSIFICAZIONE.ID_genere WHERE ID_film = " + f.getId() + ")";

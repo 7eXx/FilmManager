@@ -43,8 +43,7 @@ public class FilmModificaController implements Initializable {
     ObservableList<Attore> attoriPres, attoriNonPres;
     ObservableList<Genere> generiPres, generiNonPres;
     ObservableList<Produttore> prodPres, prodNonPres;
-    
-    Regista rlast;
+    ObservableList<Regista> regiaPres, regiaTutti;
     
     @FXML
     private TextField tfIdFilm, tfNome, tfDurata, tfNazione, tfVoto, tfBudget, tfNumOscar;
@@ -61,15 +60,13 @@ public class FilmModificaController implements Initializable {
     @FXML
     private ListView<Genere> listGeneri;
     @FXML
-    private ChoiceBox<Regista> choiceRegista;
+    private ListView<Regista> listRegia;
     
     public void initData(Film film, boolean modifica, FilmManagerController manager) {
         
         this.modifica = modifica;
         this.film = film;
         this.main = manager;
-        
-        choiceRegista.setItems(Cinema.getInfo(Regista.class, null, false));
         
         if (modifica) {
             
@@ -94,8 +91,17 @@ public class FilmModificaController implements Initializable {
             attoriNonPres = Cinema.getInfo(Attore.class, film, false);
             listAttori.setItems(attoriPres);
             
-            listGeneri.setItems(Cinema.getInfo(Genere.class, film, true));
-            listProduttori.setItems(Cinema.getInfo(Produttore.class, film, true));
+            generiPres = Cinema.getInfo(Genere.class, film, true);
+            generiNonPres = Cinema.getInfo(Genere.class, film, false);
+            listGeneri.setItems(generiPres);
+            
+            prodPres = Cinema.getInfo(Produttore.class, film, true);
+            prodNonPres = Cinema.getInfo(Produttore.class, film, false);
+            listProduttori.setItems(prodPres);
+            
+            regiaPres = Cinema.getInfo(Regista.class, film, true);
+            regiaTutti = Cinema.getInfo(Regista.class, null, false);
+            listRegia.setItems(regiaPres);
           
             /*
             Regista r = (Regista) Cinema.getInfo(Regista.class, film, true).get(0);
@@ -109,16 +115,40 @@ public class FilmModificaController implements Initializable {
         else
         {
             attoriPres = FXCollections.observableArrayList();
-            attoriNonPres = Cinema.getInfo(Class.class, null, false);
+            attoriNonPres = Cinema.getInfo(Attore.class, null, false);
             
+            generiPres = FXCollections.observableArrayList();
+            generiNonPres = Cinema.getInfo(Genere.class, null, false);
+            
+            prodPres = FXCollections.observableArrayList();
+            prodNonPres = Cinema.getInfo(Produttore.class, null, false);
+            
+            regiaPres = FXCollections.observableArrayList();
+            regiaTutti = Cinema.getInfo(Regista.class, null, false);
         }
         
         for (Attore next : attoriPres) {
-            System.out.println("presente: " + next);
+            System.out.println("attore presente: " + next);
         }
         
         for (Attore next : attoriNonPres) {
-            System.out.println("non presente " + next);
+            System.out.println("attore non presente " + next);
+        }
+        
+        for (Genere next : generiPres) {
+            System.out.println("genere presente " + next);
+        }
+        
+        for (Genere next : generiNonPres) {
+            System.out.println("genere non presente " + next);
+        }
+        
+        for (Produttore next : prodPres) {
+            System.out.println("produttore presente " + next);
+        }
+        
+        for (Produttore next : prodNonPres) {
+            System.out.println("produttore non presente " + next);
         }
     }
     
