@@ -40,7 +40,9 @@ public class FilmModificaController implements Initializable {
     boolean modifica;
     FilmManagerController main;
     
-    ObservableList<Attore> attoriPart, attoriNonPart;
+    ObservableList<Attore> attoriPres, attoriNonPres;
+    ObservableList<Genere> generiPres, generiNonPres;
+    ObservableList<Produttore> prodPres, prodNonPres;
     
     Regista rlast;
     
@@ -60,7 +62,6 @@ public class FilmModificaController implements Initializable {
     private ListView<Genere> listGeneri;
     @FXML
     private ChoiceBox<Regista> choiceRegista;
-    
     
     public void initData(Film film, boolean modifica, FilmManagerController manager) {
         
@@ -89,35 +90,36 @@ public class FilmModificaController implements Initializable {
             taDescrizione.setText(film.getDescrizione());
             tfNumOscar.setText(film.getNum_oscar() + "");
             
-            attoriPart = Cinema.getInfo(Attore.class, film, true);
-            attoriNonPart = Cinema.getInfo(Attore.class, film, false);
-            listAttori.setItems(attoriPart);
+            attoriPres = Cinema.getInfo(Attore.class, film, true);
+            attoriNonPres = Cinema.getInfo(Attore.class, film, false);
+            listAttori.setItems(attoriPres);
             
             listGeneri.setItems(Cinema.getInfo(Genere.class, film, true));
             listProduttori.setItems(Cinema.getInfo(Produttore.class, film, true));
-            
+          
+            /*
             Regista r = (Regista) Cinema.getInfo(Regista.class, film, true).get(0);
             boolean find = false;
             for (int i = 0; i < choiceRegista.getItems().size() && !find; i++) {
                 if(choiceRegista.getItems().get(i).getId() == r.getId())
                     choiceRegista.getSelectionModel().select(i);
             }
+            */
         }
         else
         {
-            attoriPart = FXCollections.observableArrayList();
-            attoriNonPart = Cinema.getInfo(Class.class, null, false);
+            attoriPres = FXCollections.observableArrayList();
+            attoriNonPres = Cinema.getInfo(Class.class, null, false);
+            
         }
-        /*
-        for (Attore next : attoriPart) {
+        
+        for (Attore next : attoriPres) {
             System.out.println("presente: " + next);
         }
         
-        for (Attore next : attoriNonPart) {
+        for (Attore next : attoriNonPres) {
             System.out.println("non presente " + next);
         }
-        */
-        
     }
     
     @Override

@@ -127,7 +127,7 @@ public class Cinema {
 
     }
 
-    private static ObservableList getAttori(Object o,boolean join, Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getAttori(Object o, boolean join, Statement stmt, ResultSet rs) throws SQLException {
 
         String query = "SELECT * FROM ATTORE";
         if (o != null) {
@@ -138,9 +138,7 @@ public class Cinema {
                             + Attore.CITTA + "," + Attore.DATA_NASCITA + "," + Attore.BIOGRAFIA + ",oscar"
                             + " FROM ATTORE INNER JOIN PARTECIPAZIONE ON PARTECIPAZIONE.ID_attore = ATTORE.ID_attore"
                             + " WHERE ID_film = " + f.getId();
-                }
-                else
-                {
+                } else {
                     query = "SELECT * FROM ATTORE"
                             + " WHERE ATTORE.ID_attore NOT IN"
                             + " (SELECT ATTORE.ID_attore FROM ATTORE INNER JOIN PARTECIPAZIONE"
@@ -198,7 +196,7 @@ public class Cinema {
         stmt.setString(4, attore.getCitta());
         stmt.setString(5, attore.getData_nascita());
         stmt.setString(6, attore.getBiografia());
-        
+
         stmt.executeUpdate();
         rs = stmt.getGeneratedKeys();
 
@@ -279,14 +277,21 @@ public class Cinema {
         return true;
     }
 
-    private static ObservableList getProduttori(Object o, Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getProduttori(Object o, boolean join, Statement stmt, ResultSet rs) throws SQLException {
         String query = "SELECT * FROM CASA_PRODUTTRICE";
         if (o != null) {
             if (o instanceof Film) {
                 Film f = (Film) o;
-                query = "SELECT CASA_PRODUTTRICE." + Produttore.ID + "," + Produttore.NOME + "," + Produttore.NAZIONE + "," + Produttore.DESCRIZIONE
+                if (join) {
+                    query = "SELECT CASA_PRODUTTRICE." + Produttore.ID + "," + Produttore.NOME + "," + Produttore.NAZIONE + "," + Produttore.DESCRIZIONE
                         + " FROM CASA_PRODUTTRICE INNER JOIN PRODUZIONE ON CASA_PRODUTTRICE.ID_casa = PRODUZIONE.ID_casa"
                         + " WHERE ID_film = " + f.getId();
+                } else {
+                    query = "SELECT * FROM CASA_PRODUTTRICE"
+                            + " WHERE CASA_PRODUTTRICE.ID_casa NOT IN"
+                            + " (SELECT CASA_PRODUTTRICE.ID_casa FROM PRODUZIONE INNER JOIN CASA_PRODUTTRICE"
+                            + " ON CASA.ID_casa = PRODUZIONE.ID_casa WHERE ID_film = " + f.getId() + ")";
+                }
             }
         }
         rs = stmt.executeQuery(query);
@@ -337,14 +342,21 @@ public class Cinema {
         return true;
     }
 
-    private static ObservableList getGeneri(Object o, Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getGeneri(Object o, boolean join, Statement stmt, ResultSet rs) throws SQLException {
         String query = "SELECT * FROM GENERE";
         if (o != null) {
             if (o instanceof Film) {
                 Film f = (Film) o;
-                query = "SELECT GENERE." + Genere.ID + "," + Genere.GENERE + "," + Genere.DESCRIZIONE
+                if (join) {
+                    query = "SELECT GENERE." + Genere.ID + "," + Genere.GENERE + "," + Genere.DESCRIZIONE
                         + " FROM GENERE INNER JOIN CLASSIFICAZIONE ON GENERE.ID_genere = CLASSIFICAZIONE.ID_genere"
                         + " WHERE ID_film = " + f.getId();
+                } else {
+                    query = "SELECT * GENERE"
+                            + " WHERE GENERE.ID_genere NOT IN"
+                            + " (SELECT GENERE.ID_genere FROM CLASSIFICAZIONE INNER JOIN GENERE"
+                            + " ON GENERE.ID_genere = CLASSIFICAZIONE.ID_genere WHERE ID_film = " + f.getId() + ")";
+                }
             }
         }
         rs = stmt.executeQuery(query);
@@ -423,7 +435,7 @@ public class Cinema {
                     if (o != null) {
                         data = getAttori(o, join, stmt, rs);
                     } else {
-                        data = getAttori(null,false, stmt, rs);
+                        data = getAttori(null, false, stmt, rs);
                     }
                 } else if (c.equals(Regista.class)) {
                     if (o != null) {
@@ -433,15 +445,15 @@ public class Cinema {
                     }
                 } else if (c.equals(Produttore.class)) {
                     if (o != null) {
-                        data = getProduttori(o, stmt, rs);
+                        data = getProduttori(o, join, stmt, rs);
                     } else {
-                        data = getProduttori(o, stmt, rs);
+                        data = getProduttori(o, false, stmt, rs);
                     }
                 } else if (c.equals(Genere.class)) {
                     if (o != null) {
-                        data = getGeneri(o, stmt, rs);
+                        data = getGeneri(o, join, stmt, rs);
                     } else {
-                        data = getGeneri(null, stmt, rs);
+                        data = getGeneri(null, false, stmt, rs);
                     }
                 }
             }
