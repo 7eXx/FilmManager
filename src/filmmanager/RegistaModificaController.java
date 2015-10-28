@@ -126,7 +126,7 @@ public class RegistaModificaController implements Initializable {
                 taBiografia.setText(regista.getBiografia());
             }
             
-            ObservableList<Film> f = Cinema.getInfo(Film.class, regista);
+            ObservableList<Film> f = Cinema.getInfo(Film.class, regista, true);
             listRegistaFilm.setItems(f);
         }
     }

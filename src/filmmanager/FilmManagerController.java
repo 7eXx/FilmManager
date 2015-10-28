@@ -113,19 +113,19 @@ public class FilmManagerController implements Initializable {
         registaNazione.setCellValueFactory(new PropertyValueFactory("nazione"));
         registaDataNascita.setCellValueFactory(new PropertyValueFactory("data_nascita"));
         // Carica i Film
-        films = Cinema.getInfo(Film.class, null);
+        films = Cinema.getInfo(Film.class, null, false);
         tableFilms.setItems(films);
         // carica gli attori
-        attori = Cinema.getInfo(Attore.class, null);
+        attori = Cinema.getInfo(Attore.class, null, false);
         tableAttori.setItems(attori);
         // carica i registi
-        registi = Cinema.getInfo(Regista.class, null);
+        registi = Cinema.getInfo(Regista.class, null, false);
         tableRegisti.setItems(registi);
         // carico i produttori
-        produttori = Cinema.getInfo(Produttore.class, null);
+        produttori = Cinema.getInfo(Produttore.class, null, false);
         listProduttori.setItems(produttori);
         // carico i generi
-        generi = Cinema.getInfo(Genere.class, null);
+        generi = Cinema.getInfo(Genere.class, null, false);
         listGeneri.setItems(generi);
         // seleziona una riga
         //tableFilms.getSelectionModel().clearSelection();
@@ -140,7 +140,7 @@ public class FilmManagerController implements Initializable {
                     tfNazioneProduttore.setText(newValue.getNazione());
                     taDescrizioneProduttore.setText(newValue.getDescrizione());
 
-                    ObservableList<Film> f = Cinema.getInfo(Film.class, newValue);
+                    ObservableList<Film> f = Cinema.getInfo(Film.class, newValue, true);
                     listProduttoriFilm.setItems(f);
                 } else {
                     tfIdProduttore.clear();
@@ -161,7 +161,7 @@ public class FilmManagerController implements Initializable {
                     tfNomeGenere.setText(newValue.getGenere());
                     taDescrizioneGenere.setText(newValue.getDescrizione());
 
-                    ObservableList<Film> f = Cinema.getInfo(Film.class, newValue);
+                    ObservableList<Film> f = Cinema.getInfo(Film.class, newValue, true);
                     listGeneriFilm.setItems(f);
                 } else {
                     tfIdGenere.clear();

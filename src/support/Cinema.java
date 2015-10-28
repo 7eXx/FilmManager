@@ -127,16 +127,25 @@ public class Cinema {
 
     }
 
-    private static ObservableList getAttori(Object o, Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getAttori(Object o,boolean join, Statement stmt, ResultSet rs) throws SQLException {
 
         String query = "SELECT * FROM ATTORE";
         if (o != null) {
             if (o instanceof Film) {
                 Film f = (Film) o;
-                query = "SELECT ATTORE." + Attore.ID + "," + Attore.NOME + "," + Attore.COGNOME + "," + Attore.NAZIONE + ","
-                        + Attore.CITTA + "," + Attore.DATA_NASCITA + "," + Attore.BIOGRAFIA + ",oscar"
-                        + " FROM ATTORE INNER JOIN PARTECIPAZIONE ON PARTECIPAZIONE.ID_attore = ATTORE.ID_attore"
-                        + " WHERE ID_film = " + f.getId();
+                if (join) {
+                    query = "SELECT ATTORE." + Attore.ID + "," + Attore.NOME + "," + Attore.COGNOME + "," + Attore.NAZIONE + ","
+                            + Attore.CITTA + "," + Attore.DATA_NASCITA + "," + Attore.BIOGRAFIA + ",oscar"
+                            + " FROM ATTORE INNER JOIN PARTECIPAZIONE ON PARTECIPAZIONE.ID_attore = ATTORE.ID_attore"
+                            + " WHERE ID_film = " + f.getId();
+                }
+                else
+                {
+                    query = "SELECT * FROM ATTORE"
+                            + " WHERE ATTORE.ID_attore NOT IN"
+                            + " (SELECT ATTORE.ID_attore FROM ATTORE INNER JOIN PARTECIPAZIONE"
+                            + " ON ATTORE.ID_attore = PARTECIPAZIONE.ID_attore WHERE ID_film = " + f.getId() + ")";
+                }
             }
         }
         rs = stmt.executeQuery(query);
@@ -387,9 +396,10 @@ public class Cinema {
      *
      * @param c cosa estrarre
      * @param o secondo quali informazione ricercare
+     * @param join se estrarre i collegati o i mancanti
      * @return lista di oggetti
      */
-    public static ObservableList getInfo(Class c, Object o) {
+    public static ObservableList getInfo(Class c, Object o, boolean join) {
 
         Connection conn = null;
         Statement stmt = null;
@@ -411,9 +421,9 @@ public class Cinema {
                     }
                 } else if (c.equals(Attore.class)) {
                     if (o != null) {
-                        data = getAttori(o, stmt, rs);
+                        data = getAttori(o, join, stmt, rs);
                     } else {
-                        data = getAttori(null, stmt, rs);
+                        data = getAttori(null,false, stmt, rs);
                     }
                 } else if (c.equals(Regista.class)) {
                     if (o != null) {

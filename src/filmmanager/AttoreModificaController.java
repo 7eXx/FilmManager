@@ -74,7 +74,7 @@ public class AttoreModificaController implements Initializable {
 
             taBiografia.setText(attore.getBiografia());
             
-            ObservableList<Film> f = Cinema.getInfo(Film.class, attore);
+            ObservableList<Film> f = Cinema.getInfo(Film.class, attore, true);
             listAttoreFilm.setItems(f);
         }
     }
