@@ -33,6 +33,8 @@
           </Menu>
         </menus>
       </MenuBar>
+      <Label text="Ricerca" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="7.0" />
+      <TextField fx:id="tfRicerca" prefHeight="25.0" prefWidth="130.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="3.0" />
       <TabPane fx:id="tabPaneInfo" layoutY="31.0" prefHeight="512.0" prefWidth="671.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
         <tabs>
           <Tab fx:id="tabFilms" text="Films">

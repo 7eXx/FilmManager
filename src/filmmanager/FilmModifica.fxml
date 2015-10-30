@@ -12,18 +12,18 @@
         <menus>
           <Menu mnemonicParsing="false" text="Gestisci">
             <items>
-              <MenuItem mnemonicParsing="false" text="Cambia Regia" />
-                  <MenuItem mnemonicParsing="false" text="Aggiungi Attore" />
-                  <MenuItem mnemonicParsing="false" text="Aggiungi Casa" />
-                  <MenuItem mnemonicParsing="false" text="Aggiungi Genere" />
+              <MenuItem mnemonicParsing="false" onAction="#onChangeRegista" text="Cambia Regia" />
+                  <MenuItem mnemonicParsing="false" onAction="#onAddAttore" text="Aggiungi Attore" />
+                  <MenuItem mnemonicParsing="false" onAction="#onAddProduttore" text="Aggiungi Casa" />
+                  <MenuItem mnemonicParsing="false" onAction="#onAddGenere" text="Aggiungi Genere" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Rimuovi">
             <items>
-              <MenuItem mnemonicParsing="false" text="Regia" />
-                  <MenuItem mnemonicParsing="false" text="Attore" />
-                  <MenuItem mnemonicParsing="false" text="Casa Produttrice" />
-                  <MenuItem mnemonicParsing="false" text="Genere" />
+              <MenuItem mnemonicParsing="false" onAction="#onRemoveRegista" text="Regia" />
+                  <MenuItem mnemonicParsing="false" onAction="#onRemoveAttore" text="Attore" />
+                  <MenuItem mnemonicParsing="false" onAction="#onRemoveProduttore" text="Casa Produttrice" />
+                  <MenuItem mnemonicParsing="false" onAction="#onRemoveGenere" text="Genere" />
             </items>
           </Menu>
         </menus>
@@ -48,15 +48,15 @@
       <TextArea fx:id="taDescrizione" layoutX="22.0" layoutY="240.0" prefHeight="200.0" prefWidth="191.0" wrapText="true" />
       <Button fx:id="btConferma" layoutX="54.0" layoutY="454.0" mnemonicParsing="false" onAction="#onClickConferma" prefHeight="41.0" prefWidth="129.0" text="Conferma" />
       <Button fx:id="btAnnulla" layoutX="276.0" layoutY="454.0" mnemonicParsing="false" onAction="#onClickAnnulla" prefHeight="41.0" prefWidth="129.0" text="Annulla" />
-      <ListView fx:id="listAttori" layoutX="256.0" layoutY="308.0" prefHeight="120.0" prefWidth="170.0" />
-      <ListView fx:id="listProduttori" layoutX="466.0" layoutY="289.0" prefHeight="193.0" prefWidth="139.0" />
-      <ListView fx:id="listGeneri" layoutX="466.0" layoutY="67.0" prefHeight="182.0" prefWidth="139.0" />
+      <ListView fx:id="listProduttori" layoutX="256.0" layoutY="308.0" prefHeight="120.0" prefWidth="170.0" />
+      <ListView fx:id="listGeneri" layoutX="466.0" layoutY="289.0" prefHeight="193.0" prefWidth="139.0" />
+      <ListView fx:id="listAttori" layoutX="466.0" layoutY="67.0" prefHeight="182.0" prefWidth="139.0" />
       <Label layoutX="256.0" layoutY="219.0" text="Regia" />
       <CheckBox fx:id="cbOscarAttore" layoutX="554.0" layoutY="40.0" mnemonicParsing="false" text="Oscar" />
       <CheckBox fx:id="cbOscarRegia" layoutX="374.0" layoutY="219.0" mnemonicParsing="false" text="Oscar" />
       <Label layoutX="256.0" layoutY="281.0" text="Case Produttrici" />
       <Label layoutX="466.0" layoutY="40.0" text="Attori" />
       <Label layoutX="466.0" layoutY="263.0" text="Generi" />
-      <ListView fx:id="listRegia" layoutX="256.0" layoutY="245.0" prefHeight="30.0" prefWidth="170.0" />
+      <ListView fx:id="listRegia" layoutX="256.0" layoutY="245.0" prefHeight="25.0" prefWidth="170.0" />
    </children>
 </AnchorPane>

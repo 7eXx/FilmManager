@@ -21,6 +21,11 @@ import javafx.collections.ObservableList;
  */
 public class Cinema {
 
+    public enum State {
+
+        NONE, MODIFIED, INSERITED, DELETED, MOD_DELETED
+    };
+
     static final String DB = "CINEMA";
     static final String USER = "utente";
     static final String PASS = "password";
@@ -147,10 +152,18 @@ public class Cinema {
             }
         }
         rs = stmt.executeQuery(query);
-        ObservableList<Attore> data = FXCollections.observableArrayList();
+        ObservableList data = FXCollections.observableArrayList();
 
         while (rs.next()) {
-            Attore a = new Attore();
+            Attore a;
+            if (o != null && o instanceof Film) {
+                a = new AttoreOscar();
+                if (join) {
+                    ((AttoreOscar) a).setOscar(rs.getBoolean(AttoreOscar.OSCAR));
+                }
+            } else {
+                a = new Attore();
+            }
 
             a.setId(rs.getInt(Attore.ID));
             a.setNome(rs.getString(Attore.NOME));
@@ -284,8 +297,8 @@ public class Cinema {
                 Film f = (Film) o;
                 if (join) {
                     query = "SELECT CASA_PRODUTTRICE." + Produttore.ID + "," + Produttore.NOME + "," + Produttore.NAZIONE + "," + Produttore.DESCRIZIONE
-                        + " FROM CASA_PRODUTTRICE INNER JOIN PRODUZIONE ON CASA_PRODUTTRICE.ID_casa = PRODUZIONE.ID_casa"
-                        + " WHERE ID_film = " + f.getId();
+                            + " FROM CASA_PRODUTTRICE INNER JOIN PRODUZIONE ON CASA_PRODUTTRICE.ID_casa = PRODUZIONE.ID_casa"
+                            + " WHERE ID_film = " + f.getId();
                 } else {
                     query = "SELECT * FROM CASA_PRODUTTRICE"
                             + " WHERE CASA_PRODUTTRICE.ID_casa NOT IN"
@@ -349,8 +362,8 @@ public class Cinema {
                 Film f = (Film) o;
                 if (join) {
                     query = "SELECT GENERE." + Genere.ID + "," + Genere.GENERE + "," + Genere.DESCRIZIONE
-                        + " FROM GENERE INNER JOIN CLASSIFICAZIONE ON GENERE.ID_genere = CLASSIFICAZIONE.ID_genere"
-                        + " WHERE ID_film = " + f.getId();
+                            + " FROM GENERE INNER JOIN CLASSIFICAZIONE ON GENERE.ID_genere = CLASSIFICAZIONE.ID_genere"
+                            + " WHERE ID_film = " + f.getId();
                 } else {
                     query = "SELECT * FROM GENERE"
                             + " WHERE GENERE.ID_genere NOT IN"
@@ -431,7 +444,7 @@ public class Cinema {
                     } else {
                         data = getFilms(null, stmt, rs);
                     }
-                } else if (c.equals(Attore.class)) {
+                } else if (c.equals(Attore.class) || c.equals(AttoreOscar.class)) {
                     if (o != null) {
                         data = getAttori(o, join, stmt, rs);
                     } else {

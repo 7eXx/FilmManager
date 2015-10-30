@@ -298,8 +298,8 @@ public class FilmManagerController implements Initializable {
         stage.setTitle("Inserisci Regista");
         stage.setScene(new Scene(root));
 
-        RegistaModificaController manager = fxmlLoader.<RegistaModificaController>getController();
-        manager.initData(null, false, this);
+        RegistaModificaController modRegista = fxmlLoader.<RegistaModificaController>getController();
+        modRegista.initData(null, false, this);
         stage.show();
     }
 
