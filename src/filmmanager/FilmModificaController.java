@@ -49,6 +49,7 @@ public class FilmModificaController implements Initializable {
     private Film film;
     boolean modifica;
     FilmManagerController main;
+    int minOscar;
 
     public ObservableList<AttoreOscar> attoriPres;
     public ObservableList<AttoreOscar> attoriNonPres;
@@ -103,7 +104,7 @@ public class FilmModificaController implements Initializable {
             tfNumOscar.setText(film.getNum_oscar() + "");
 
             attoriPres = Cinema.getInfo(AttoreOscar.class, film, true);
-            attoriNonPres = Cinema.getInfo(Attore.class, film, false);
+            attoriNonPres = Cinema.getInfo(AttoreOscar.class, film, false);
 
             generiPres = Cinema.getInfo(Genere.class, film, true);
             generiNonPres = Cinema.getInfo(Genere.class, film, false);
@@ -114,7 +115,11 @@ public class FilmModificaController implements Initializable {
             regiaPres = Cinema.getInfo(Regista.class, film, true);
             regiaTutti = Cinema.getInfo(Regista.class, null, false);
 
-
+            for (AttoreOscar att : attoriPres) {
+                if (att.isOscar()) {
+                    minOscar++;
+                }
+            }
             /*
              Regista r = (Regista) Cinema.getInfo(Regista.class, film, true).get(0);
              boolean find = false;
@@ -124,9 +129,11 @@ public class FilmModificaController implements Initializable {
              }
              */
         } else {
+            minOscar = 0;
+            tfNumOscar.setText(minOscar + "");
 
             attoriPres = FXCollections.observableArrayList();
-            attoriNonPres = Cinema.getInfo(Attore.class, null, false);
+            attoriNonPres = Cinema.getInfo(AttoreOscar.class, null, false);
 
             generiPres = FXCollections.observableArrayList();
             generiNonPres = Cinema.getInfo(Genere.class, null, false);
@@ -179,8 +186,13 @@ public class FilmModificaController implements Initializable {
                             a.setState(State.MODIFIED);
                             attoriMod.add(a);
                         }
+                        if(newValue)
+                            addOscar();
+                        else
+                            removeOscar();
                     }
-
+                } else {
+                    cbOscarAttore.setSelected(false);
                 }
             }
         });
@@ -232,10 +244,10 @@ public class FilmModificaController implements Initializable {
                 film.setDescrizione(null);
             }
 
-            if (!tfNumOscar.getText().trim().equals("")) {
+            if (!tfNumOscar.getText().trim().equals("") && minOscar < Integer.parseInt(tfNumOscar.getText())) {
                 film.setNum_oscar(Integer.parseInt(tfNumOscar.getText()));
             } else {
-                film.setNum_oscar(0);
+                film.setNum_oscar(minOscar);
             }
 
             if (modifica) {
@@ -246,6 +258,10 @@ public class FilmModificaController implements Initializable {
 
                 Cinema.insertInfo(film);
                 main.insertInfo(film);
+            }
+
+            if (!attoriMod.isEmpty()) {
+                Cinema.updateFilmAttori(attoriMod, film);
             }
 
             Stage stage = (Stage) btConferma.getScene().getWindow();
@@ -338,6 +354,8 @@ public class FilmModificaController implements Initializable {
                     a.setState(State.DELETED);
                     break;
             }
+            if(a.isOscar())
+                removeOscar();
             System.out.println("removed lista: " + attoriMod);
         }
     }
@@ -350,6 +368,30 @@ public class FilmModificaController implements Initializable {
     @FXML
     public void onRemoveGenere(ActionEvent event) {
 
+    }
+    
+    public void addOscar()
+    {
+        minOscar++;
+        if (Integer.parseInt(tfNumOscar.getText()) < minOscar) {
+            tfNumOscar.setText(minOscar + "");
+        } else {
+            int num = Integer.parseInt(tfNumOscar.getText());
+            num++;
+            tfNumOscar.setText(num + "");
+        }
+    }
+    
+    public void removeOscar()
+    {
+        minOscar--;
+        if (Integer.parseInt(tfNumOscar.getText()) < minOscar) {
+            tfNumOscar.setText(minOscar + "");
+        } else {
+            int num = Integer.parseInt(tfNumOscar.getText());
+            num--;
+            tfNumOscar.setText(num + "");
+        }
     }
 
 }

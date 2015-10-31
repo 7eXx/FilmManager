@@ -24,6 +24,7 @@ import support.Cinema.State;
 public class ListaAggiungiController implements Initializable {
 
     FilmModificaController controller;
+    Class c;
 
     @FXML
     private Button btAggiungi;
@@ -43,6 +44,7 @@ public class ListaAggiungiController implements Initializable {
     public void initData(FilmModificaController controller, Class c) {
 
         this.controller = controller;
+        this.c = c;
 
         if (c.equals(AttoreOscar.class)) {
             listAggiungi.setItems(controller.attoriNonPres);
@@ -53,27 +55,31 @@ public class ListaAggiungiController implements Initializable {
     public void onClickAggiungi(ActionEvent event) {
         if (!listAggiungi.getSelectionModel().isEmpty()) {
             //AttoreOscar
-            int i = listAggiungi.getSelectionModel().getSelectedIndex();
-            AttoreOscar a = controller.attoriNonPres.get(i);
-            controller.attoriNonPres.remove(a);
-            controller.attoriPres.add(a);
-            switch (a.getState()) {
-                case DELETED:
-                    a.setState(State.NONE);
-                    controller.attoriMod.remove(a);
-                    break;
-                
-                case MOD_DELETED:
-                    a.setState(State.MODIFIED);
-                    break;
-
-                case NONE:
-                    a.setState(State.INSERITED);
-                    controller.attoriMod.add(a);
-                    break;
+            if (c.equals(AttoreOscar.class)) {
+                int i = listAggiungi.getSelectionModel().getSelectedIndex();
+                AttoreOscar a = controller.attoriNonPres.get(i);
+                controller.attoriNonPres.remove(a);
+                controller.attoriPres.add(a);
+                switch (a.getState()) {
+                    case DELETED:
+                        a.setState(State.NONE);
+                        controller.attoriMod.remove(a);
+                        break;
+                    
+                    case MOD_DELETED:
+                        a.setState(State.MODIFIED);
+                        break;
+                    
+                    case NONE:
+                        a.setState(State.INSERITED);
+                        controller.attoriMod.add(a);
+                        break;
+                }
+                if (a.isOscar()) {
+                    controller.addOscar();
+                }
+                System.out.println("instert lista: " + controller.attoriMod);
             }
-            // output test modifiche
-            System.out.println("instert lista: " + controller.attoriMod);
         }
     }
 

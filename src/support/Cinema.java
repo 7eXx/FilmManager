@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -132,7 +133,7 @@ public class Cinema {
 
     }
 
-    private static ObservableList getAttori(Object o, boolean join, Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getAttori(Object o, boolean join, Class c, Statement stmt, ResultSet rs) throws SQLException {
 
         String query = "SELECT * FROM ATTORE";
         if (o != null) {
@@ -156,7 +157,7 @@ public class Cinema {
 
         while (rs.next()) {
             Attore a;
-            if (o != null && o instanceof Film) {
+            if (c.equals(AttoreOscar.class)) {
                 a = new AttoreOscar();
                 if (join) {
                     ((AttoreOscar) a).setOscar(rs.getBoolean(AttoreOscar.OSCAR));
@@ -446,9 +447,9 @@ public class Cinema {
                     }
                 } else if (c.equals(Attore.class) || c.equals(AttoreOscar.class)) {
                     if (o != null) {
-                        data = getAttori(o, join, stmt, rs);
+                        data = getAttori(o, join, c,  stmt, rs);
                     } else {
-                        data = getAttori(null, false, stmt, rs);
+                        data = getAttori(null, false, c, stmt, rs);
                     }
                 } else if (c.equals(Regista.class)) {
                     if (o != null) {
@@ -680,5 +681,80 @@ public class Cinema {
             }
         }
         return success;
+    }
+
+    public static boolean updateFilmAttori(ArrayList<AttoreOscar> attoriMod, Film film) {
+
+        Connection conn = null;
+        Statement stmt = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        boolean success = false;
+        String query;
+
+        try {
+
+            conn = DriverManager.getConnection(DBURL, USER, PASS);
+
+            for (AttoreOscar attore : attoriMod) {
+
+                switch (attore.getState()) {
+                    case MODIFIED:
+                        query = "UPDATE PARTECIPAZIONE SET OSCAR = ? WHERE ID_film = ? AND ID_attore = ?";
+                        pstm = conn.prepareStatement(query);
+                        pstm.setBoolean(1, attore.isOscar());
+                        pstm.setInt(2, film.getId());
+                        pstm.setInt(3, attore.getId());
+                        pstm.executeUpdate();
+                        break;
+                    case INSERITED:
+                        query = "INSERT INTO PARTECIPAZIONE values (?,?, ?)";
+                        pstm = conn.prepareStatement(query);
+                        pstm.setInt(1, film.getId());
+                        pstm.setInt(2, attore.getId());
+                        pstm.setBoolean(3, attore.isOscar());
+                        pstm.executeUpdate();
+                        break;
+                    case DELETED:
+                    case MOD_DELETED:
+                        query = "DELETE FROM PARTECIPAZIONE WHERE ID_film = " + film.getId() + " AND ID_attore = " + attore.getId();
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(query);
+                        success = true;
+                        break;
+                    default:
+                        throw new AssertionError(attore.getState().name());
+                }
+            }
+        } catch (SQLException ex) {
+
+            System.out.println("\n---SQLException caught ---\n");
+            while (ex != null) {
+                System.out.println("Message: " + ex.getMessage());
+                System.out.println("SQLState: " + ex.getSQLState());
+                System.out.println("ErrorCode: " + ex.getErrorCode());
+                ex = ex.getNextException();
+                System.out.println("");
+            }
+        } finally {
+            try {
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+                if (stmt != null && !stmt.isClosed()) {
+                    stmt.close();
+                }
+                if (pstm != null && !pstm.isClosed()) {
+                    pstm.close();
+                }
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return success;
+
     }
 }
