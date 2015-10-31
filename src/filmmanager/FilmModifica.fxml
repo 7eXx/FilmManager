@@ -57,6 +57,6 @@
       <Label layoutX="256.0" layoutY="281.0" text="Case Produttrici" />
       <Label layoutX="466.0" layoutY="40.0" text="Attori" />
       <Label layoutX="466.0" layoutY="263.0" text="Generi" />
-      <ListView fx:id="listRegia" layoutX="256.0" layoutY="245.0" prefHeight="25.0" prefWidth="170.0" />
+      <ListView fx:id="listRegia" layoutX="256.0" layoutY="245.0" mouseTransparent="true" prefHeight="32.0" prefWidth="170.0" />
    </children>
 </AnchorPane>

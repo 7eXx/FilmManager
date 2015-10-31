@@ -24,7 +24,7 @@ public class Cinema {
 
     public enum State {
 
-        NONE, MODIFIED, INSERITED, DELETED, MOD_DELETED
+        NONE, MODIFIED, INSERTED, DELETED, MOD_DELETED
     };
 
     static final String DB = "CINEMA";
@@ -220,24 +220,39 @@ public class Cinema {
         return true;
     }
 
-    private static ObservableList getRegisti(Object o, Statement stmt, ResultSet rs) throws SQLException {
+    private static ObservableList getRegisti(Object o, boolean join, Class c, Statement stmt, ResultSet rs) throws SQLException {
 
         String query = "SELECT * FROM REGISTA";
         if (o != null) {
             if (o instanceof Film) {
                 Film f = (Film) o;
-                query = "SELECT REGISTA." + Regista.ID + "," + Regista.NOME + "," + Regista.COGNOME + "," + Regista.NAZIONE + ","
-                        + Regista.DATA_NASCITA + "," + Regista.BIOGRAFIA + ", oscar"
-                        + " FROM  REGISTA INNER JOIN DIREZIONE ON DIREZIONE.ID_regista = REGISTA.ID_regista"
-                        + " WHERE ID_film = " + f.getId();
+                if (join) {
+                    query = "SELECT REGISTA." + Regista.ID + "," + Regista.NOME + "," + Regista.COGNOME + "," + Regista.NAZIONE + ","
+                            + Regista.DATA_NASCITA + "," + Regista.BIOGRAFIA + ", oscar"
+                            + " FROM  REGISTA INNER JOIN DIREZIONE ON DIREZIONE.ID_regista = REGISTA.ID_regista"
+                            + " WHERE ID_film = " + f.getId();
+                } else {
+                    query = "SELECT * FROM REGISTA"
+                            + " WHERE REGISTA.ID_regista NOT IN"
+                            + " (SELECT REGISTA.ID_regista FROM REGISTA INNER JOIN DIREZIONE"
+                            + " ON REGISTA.ID_regista = DIREZIONE.ID_regista WHERE ID_film = " + f.getId() + ")";
+                }
             }
         }
         rs = stmt.executeQuery(query);
-        ObservableList<Regista> data = FXCollections.observableArrayList();
+        ObservableList data = FXCollections.observableArrayList();
 
         while (rs.next()) {
+            Regista r;
 
-            Regista r = new Regista();
+            if (c.equals(RegistaOscar.class)) {
+                r = new RegistaOscar();
+                if (join) {
+                    ((RegistaOscar) r).setOscar(rs.getBoolean(RegistaOscar.OSCAR));
+                }
+            } else {
+                r = new Regista();
+            }
 
             r.setId(rs.getInt(Regista.ID));
             r.setNome(rs.getString(Regista.NOME));
@@ -447,15 +462,15 @@ public class Cinema {
                     }
                 } else if (c.equals(Attore.class) || c.equals(AttoreOscar.class)) {
                     if (o != null) {
-                        data = getAttori(o, join, c,  stmt, rs);
+                        data = getAttori(o, join, c, stmt, rs);
                     } else {
                         data = getAttori(null, false, c, stmt, rs);
                     }
-                } else if (c.equals(Regista.class)) {
+                } else if (c.equals(Regista.class) || c.equals(RegistaOscar.class)) {
                     if (o != null) {
-                        data = getRegisti(o, stmt, rs);
+                        data = getRegisti(o, join, c, stmt, rs);
                     } else {
-                        data = getRegisti(null, stmt, rs);
+                        data = getRegisti(null, false, c, stmt, rs);
                     }
                 } else if (c.equals(Produttore.class)) {
                     if (o != null) {
@@ -706,14 +721,16 @@ public class Cinema {
                         pstm.setInt(2, film.getId());
                         pstm.setInt(3, attore.getId());
                         pstm.executeUpdate();
+                        success = true;
                         break;
-                    case INSERITED:
+                    case INSERTED:
                         query = "INSERT INTO PARTECIPAZIONE values (?,?, ?)";
                         pstm = conn.prepareStatement(query);
                         pstm.setInt(1, film.getId());
                         pstm.setInt(2, attore.getId());
                         pstm.setBoolean(3, attore.isOscar());
                         pstm.executeUpdate();
+                        success = true;
                         break;
                     case DELETED:
                     case MOD_DELETED:
@@ -755,6 +772,76 @@ public class Cinema {
             }
         }
         return success;
-
     }
+
+    public static boolean updateFilmRegista(RegistaOscar reg, Film film) {
+        Connection conn = null;
+        Statement stmt = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        boolean success = false;
+        String query;
+
+        try {
+
+            conn = DriverManager.getConnection(DBURL, USER, PASS);
+            switch (reg.getState()) {
+                case MODIFIED:
+                    query = "UPDATE DIREZIONE SET ID_regista = ?, oscar = ? WHERE ID_film = ?";
+                    pstm = conn.prepareStatement(query);
+                    pstm.setInt(1, reg.getId());
+                    pstm.setBoolean(2, reg.isOscar());
+                    pstm.setInt(3, film.getId());
+                    pstm.executeUpdate();
+                    success = true;
+                    break;
+
+                case INSERTED:
+                    query = "INSERT INTO DIREZIONE values (?,?,?)";
+                    pstm = conn.prepareStatement(query);
+                    pstm.setInt(1, film.getId());
+                    pstm.setInt(2, reg.getId());
+                    pstm.setBoolean(3, reg.isOscar());
+                    pstm.executeUpdate();
+                    success = true;
+                    break;
+                    
+                case DELETED:
+                    query = "DELETE FROM DIREZIONE WHERE ID_film = " + film.getId();
+                    stmt = conn.createStatement();
+                    stmt.executeUpdate(query);
+                    success = true;
+                    break;
+            }
+        } catch (SQLException ex) {
+
+            System.out.println("\n---SQLException caught ---\n");
+            while (ex != null) {
+                System.out.println("Message: " + ex.getMessage());
+                System.out.println("SQLState: " + ex.getSQLState());
+                System.out.println("ErrorCode: " + ex.getErrorCode());
+                ex = ex.getNextException();
+                System.out.println("");
+            }
+        } finally {
+            try {
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+                if (stmt != null && !stmt.isClosed()) {
+                    stmt.close();
+                }
+                if (pstm != null && !pstm.isClosed()) {
+                    pstm.close();
+                }
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return success;
+    }
+
 }

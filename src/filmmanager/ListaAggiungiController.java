@@ -15,6 +15,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import support.AttoreOscar;
 import support.Cinema.State;
+import support.RegistaOscar;
 
 /**
  * FXML Controller class
@@ -48,6 +49,8 @@ public class ListaAggiungiController implements Initializable {
 
         if (c.equals(AttoreOscar.class)) {
             listAggiungi.setItems(controller.attoriNonPres);
+        } else if (c.equals(RegistaOscar.class)) {
+            listAggiungi.setItems(controller.regiaNonPres);
         }
     }
 
@@ -65,13 +68,13 @@ public class ListaAggiungiController implements Initializable {
                         a.setState(State.NONE);
                         controller.attoriMod.remove(a);
                         break;
-                    
+
                     case MOD_DELETED:
                         a.setState(State.MODIFIED);
                         break;
-                    
+
                     case NONE:
-                        a.setState(State.INSERITED);
+                        a.setState(State.INSERTED);
                         controller.attoriMod.add(a);
                         break;
                 }
@@ -79,8 +82,44 @@ public class ListaAggiungiController implements Initializable {
                     controller.addOscar();
                 }
                 System.out.println("instert lista: " + controller.attoriMod);
+
+            } else if (c.equals(RegistaOscar.class)) {
+
+                int i = listAggiungi.getSelectionModel().getSelectedIndex();
+                RegistaOscar r = controller.regiaNonPres.get(i);
+                controller.resetBoxRegia();
+                
+                if (!controller.regiaPres.isEmpty()) {
+                    RegistaOscar o = controller.regiaPres.get(0);
+                    controller.regiaPres.set(0, r);
+                    controller.regiaNonPres.set(i, o);
+
+                } else {
+                    controller.regiaNonPres.remove(r);
+                    controller.regiaPres.add(r);
+                }
+
+                if (controller.regiaMod == null) {
+                    controller.regiaMod = r;
+                    controller.regiaMod.setState(State.INSERTED);
+                    
+                } else {
+                    
+                    switch (controller.regiaMod.getState()) {
+                        
+                        case NONE:
+                        case MODIFIED:
+                        case DELETED:
+                            controller.regiaMod = r;
+                            controller.regiaMod.setState(State.MODIFIED);
+                            break;
+                        case INSERTED:
+                            controller.regiaMod = r;
+                            break;
+                    }
+                }
+                System.out.println("insert lista: " + controller.regiaMod);
             }
         }
     }
-
 }

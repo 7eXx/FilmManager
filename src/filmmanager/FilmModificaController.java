@@ -30,7 +30,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import support.Attore;
 import support.AttoreOscar;
 import support.Cinema;
 import support.Cinema.State;
@@ -38,6 +37,7 @@ import support.Film;
 import support.Genere;
 import support.Produttore;
 import support.Regista;
+import support.RegistaOscar;
 
 /**
  * FXML Controller class
@@ -51,13 +51,14 @@ public class FilmModificaController implements Initializable {
     FilmManagerController main;
     int minOscar;
 
-    public ObservableList<AttoreOscar> attoriPres;
-    public ObservableList<AttoreOscar> attoriNonPres;
+    public ObservableList<AttoreOscar> attoriPres, attoriNonPres;
     public ArrayList<AttoreOscar> attoriMod;
+
+    public ObservableList<RegistaOscar> regiaPres, regiaNonPres;
+    public RegistaOscar regiaMod;
 
     ObservableList<Genere> generiPres, generiNonPres;
     ObservableList<Produttore> prodPres, prodNonPres;
-    ObservableList<Regista> regiaPres, regiaTutti;
 
     @FXML
     private TextField tfIdFilm, tfNome, tfDurata, tfNazione, tfVoto, tfBudget, tfNumOscar;
@@ -70,13 +71,13 @@ public class FilmModificaController implements Initializable {
     @FXML
     private ListView<AttoreOscar> listAttori;
     @FXML
-    private CheckBox cbOscarAttore;
+    private CheckBox cbOscarAttore, cbOscarRegia;
     @FXML
     private ListView<Produttore> listProduttori;
     @FXML
     private ListView<Genere> listGeneri;
     @FXML
-    private ListView<Regista> listRegia;
+    private ListView<RegistaOscar> listRegia;
 
     public void initData(Film film, boolean modifica, FilmManagerController manager) {
 
@@ -112,14 +113,24 @@ public class FilmModificaController implements Initializable {
             prodPres = Cinema.getInfo(Produttore.class, film, true);
             prodNonPres = Cinema.getInfo(Produttore.class, film, false);
 
-            regiaPres = Cinema.getInfo(Regista.class, film, true);
-            regiaTutti = Cinema.getInfo(Regista.class, null, false);
+            regiaPres = Cinema.getInfo(RegistaOscar.class, film, true);
+            regiaNonPres = Cinema.getInfo(RegistaOscar.class, null, false);
 
             for (AttoreOscar att : attoriPres) {
                 if (att.isOscar()) {
                     minOscar++;
                 }
             }
+
+            if (!regiaPres.isEmpty()) {
+
+                regiaMod = regiaPres.get(0);
+                if (regiaMod.isOscar()) {
+                    minOscar++;
+                    cbOscarRegia.setSelected(true);
+                }
+            }
+
             /*
              Regista r = (Regista) Cinema.getInfo(Regista.class, film, true).get(0);
              boolean find = false;
@@ -142,7 +153,7 @@ public class FilmModificaController implements Initializable {
             prodNonPres = Cinema.getInfo(Produttore.class, null, false);
 
             regiaPres = FXCollections.observableArrayList();
-            regiaTutti = Cinema.getInfo(Regista.class, null, false);
+            regiaNonPres = Cinema.getInfo(RegistaOscar.class, null, false);
         }
 
         listAttori.setItems(attoriPres);
@@ -156,6 +167,7 @@ public class FilmModificaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
         attoriMod = new ArrayList<>();
+        regiaMod = null;
 
         /// gestione selezione attore
         listAttori.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AttoreOscar>() {
@@ -186,13 +198,38 @@ public class FilmModificaController implements Initializable {
                             a.setState(State.MODIFIED);
                             attoriMod.add(a);
                         }
-                        if(newValue)
+                        if (newValue) {
                             addOscar();
-                        else
+                        } else {
                             removeOscar();
+                        }
                     }
                 } else {
                     cbOscarAttore.setSelected(false);
+                }
+            }
+        });
+
+        cbOscarRegia.selectedProperty().addListener(new ChangeListener<Boolean>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+
+                if (!regiaPres.isEmpty()) {
+                    RegistaOscar r = regiaPres.get(0);
+                    if (r.isOscar() != newValue) {
+                        regiaMod.setOscar(newValue);
+                        if (regiaMod.getState() != State.INSERTED) {
+                            regiaMod.setState(State.MODIFIED);
+                        }
+                        if (newValue) {
+                            addOscar();
+                        } else {
+                            removeOscar();
+                        }
+                    }
+                } else {
+                    cbOscarRegia.setSelected(false);
                 }
             }
         });
@@ -263,6 +300,9 @@ public class FilmModificaController implements Initializable {
             if (!attoriMod.isEmpty()) {
                 Cinema.updateFilmAttori(attoriMod, film);
             }
+            if (regiaMod != null) {
+                Cinema.updateFilmRegista(regiaMod, film);
+            }
 
             Stage stage = (Stage) btConferma.getScene().getWindow();
             stage.close();
@@ -276,7 +316,19 @@ public class FilmModificaController implements Initializable {
     }
 
     @FXML
-    public void onChangeRegista(ActionEvent event) {
+    public void onChangeRegista(ActionEvent event) throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ListaAggiungi.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setTitle("Cambia Regista");
+        stage.setScene(new Scene(root));
+
+        ListaAggiungiController scene = fxmlLoader.<ListaAggiungiController>getController();
+        scene.initData(this, RegistaOscar.class);
+        stage.show();
 
     }
 
@@ -329,6 +381,25 @@ public class FilmModificaController implements Initializable {
     @FXML
     public void onRemoveRegista(ActionEvent event) {
 
+        if (regiaMod != null) {
+            RegistaOscar r = regiaPres.get(0);
+            cbOscarRegia.setSelected(false);
+            regiaPres.remove(r);
+            regiaNonPres.add(r);
+
+            switch (regiaMod.getState()) {
+
+                case MODIFIED:
+                case NONE:
+                    regiaMod.setState(State.DELETED);
+                    break;
+                case INSERTED:
+                    regiaMod = null;
+                    break;
+            }
+
+            System.out.println("remove regia: " + regiaMod);
+        }
     }
 
     @FXML
@@ -336,11 +407,15 @@ public class FilmModificaController implements Initializable {
 
         if (!listAttori.getSelectionModel().isEmpty()) {
             AttoreOscar a = listAttori.getSelectionModel().getSelectedItem();
+            if (a.isOscar()) {
+                a.setOscar(false);
+                removeOscar();
+            }
             attoriPres.remove(a);
             attoriNonPres.add(a);
 
             switch (a.getState()) {
-                case INSERITED:
+                case INSERTED:
                     attoriMod.remove(a);
                     a.setState(State.NONE);
                     break;
@@ -354,8 +429,9 @@ public class FilmModificaController implements Initializable {
                     a.setState(State.DELETED);
                     break;
             }
-            if(a.isOscar())
+            if (a.isOscar()) {
                 removeOscar();
+            }
             System.out.println("removed lista: " + attoriMod);
         }
     }
@@ -369,9 +445,8 @@ public class FilmModificaController implements Initializable {
     public void onRemoveGenere(ActionEvent event) {
 
     }
-    
-    public void addOscar()
-    {
+
+    public void addOscar() {
         minOscar++;
         if (Integer.parseInt(tfNumOscar.getText()) < minOscar) {
             tfNumOscar.setText(minOscar + "");
@@ -381,9 +456,8 @@ public class FilmModificaController implements Initializable {
             tfNumOscar.setText(num + "");
         }
     }
-    
-    public void removeOscar()
-    {
+
+    public void removeOscar() {
         minOscar--;
         if (Integer.parseInt(tfNumOscar.getText()) < minOscar) {
             tfNumOscar.setText(minOscar + "");
@@ -392,6 +466,10 @@ public class FilmModificaController implements Initializable {
             num--;
             tfNumOscar.setText(num + "");
         }
+    }
+
+    public void resetBoxRegia() {
+        cbOscarRegia.setSelected(false);
     }
 
 }
