@@ -65,10 +65,7 @@ public class ListaAggiungiController implements Initializable {
                         // Compare first name and last name of every person with filter text.
                         String lowerCaseFilter = newValue.toLowerCase();
                         
-                        if (person.toString().toLowerCase().contains(lowerCaseFilter)) {
-                            return true;
-                        }
-                        return false; // Does not match.
+                        return person.toString().toLowerCase().contains(lowerCaseFilter); 
                     }
                 });
             }

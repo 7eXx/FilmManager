@@ -8,11 +8,14 @@ package filmmanager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +30,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -47,17 +51,30 @@ public class FilmManagerController implements Initializable {
     private static final Logger LOG = Logger.getLogger(FilmManagerController.class.getName());
 
     ObservableList<Film> films;
+    FilteredList<Film> filteredFilms;
+    SortedList<Film> sortedFilms;
+    
     ObservableList<Attore> attori;
+    FilteredList<Attore> filteredAttori;
+    SortedList<Attore> sortedAttori;
+    
     ObservableList<Regista> registi;
+    FilteredList<Regista> filteredRegisti;
+    SortedList<Regista> sortedRegisti;
+    
     ObservableList<Produttore> produttori;
+    FilteredList<Produttore> filteredProdutori;
+    
     ObservableList<Genere> generi;
+    FilteredList<Genere> filteredGeneri;
 
     @FXML
     private TabPane tabPaneInfo;
-
     @FXML
     private Tab tabFilms, tabAttori, tabRegisti, tabProduttori, tabGeneri;
-
+    @FXML
+    private TextField tfRicerca;
+    
     @FXML
     private TableView<Film> tableFilms;
     @FXML
@@ -112,21 +129,194 @@ public class FilmManagerController implements Initializable {
         registaCognome.setCellValueFactory(new PropertyValueFactory("cognome"));
         registaNazione.setCellValueFactory(new PropertyValueFactory("nazione"));
         registaDataNascita.setCellValueFactory(new PropertyValueFactory("data_nascita"));
+        
         // Carica i Film
         films = Cinema.getInfo(Film.class, null, false);
-        tableFilms.setItems(films);
         // carica gli attori
         attori = Cinema.getInfo(Attore.class, null, false);
-        tableAttori.setItems(attori);
         // carica i registi
         registi = Cinema.getInfo(Regista.class, null, false);
-        tableRegisti.setItems(registi);
         // carico i produttori
         produttori = Cinema.getInfo(Produttore.class, null, false);
-        listProduttori.setItems(produttori);
         // carico i generi
         generi = Cinema.getInfo(Genere.class, null, false);
-        listGeneri.setItems(generi);
+
+        //imposta i filtri per le ricerche
+        filteredFilms = new FilteredList<>(films, new Predicate<Film>() {
+            @Override
+            public boolean test(Film t) {
+                return true;
+            }
+        });
+
+        filteredAttori = new FilteredList<>(attori, new Predicate<Attore>() {
+            @Override
+            public boolean test(Attore t) {
+                return true;
+            }
+        });
+
+        filteredRegisti = new FilteredList<>(registi, new Predicate<Regista>() {
+            @Override
+            public boolean test(Regista t) {
+                return true;
+            }
+        });
+
+        filteredProdutori = new FilteredList<>(produttori, new Predicate<Produttore>() {
+            @Override
+            public boolean test(Produttore t) {
+                return true;
+            }
+        });
+
+        filteredGeneri = new FilteredList<>(generi, new Predicate<Genere>() {
+            @Override
+            public boolean test(Genere t) {
+                return true;
+            }
+        });
+
+        sortedFilms = new SortedList<>(filteredFilms);
+        sortedFilms.comparatorProperty().bind(tableFilms.comparatorProperty());
+        tableFilms.setItems(sortedFilms);
+        
+        sortedAttori = new SortedList<>(filteredAttori);
+        sortedAttori.comparatorProperty().bind(tableAttori.comparatorProperty());
+        tableAttori.setItems(sortedAttori);
+        
+        sortedRegisti = new SortedList<>(filteredRegisti);
+        sortedRegisti.comparatorProperty().bind(tableRegisti.comparatorProperty());
+        tableRegisti.setItems(sortedRegisti);
+        
+        listProduttori.setItems(filteredProdutori);
+        listGeneri.setItems(filteredGeneri);
+
+        tfRicerca.textProperty().addListener(new ChangeListener<String>() {
+
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+                if (tabFilms.isSelected()) {
+                    filteredFilms.setPredicate(new Predicate<Film>() {
+                        @Override
+                        public boolean test(Film f) {
+                            if (newValue == null || newValue.isEmpty()) {
+                                return true;
+                            }
+                            String lowerCaseFilter = newValue.toLowerCase();
+                            
+                            if(f.getNome().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (f.getNazione() != null && f.getNazione().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (f.getDescrizione() != null && f.getDescrizione().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            return false;
+                        }
+                    });
+                } else if (tabAttori.isSelected()) {
+                    filteredAttori.setPredicate(new Predicate<Attore>() {
+                        @Override
+                        public boolean test(Attore a) {
+                            if (newValue == null || newValue.isEmpty()) {
+                                return true;
+                            }
+                            String lowerCaseFilter = newValue.toLowerCase();
+                            
+                            if(a.getNome().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (a.getCognome().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (a.getNazione() != null && a.getNazione().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (a.getBiografia() != null && a.getBiografia().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            return false;
+                        }
+                    });
+                } else if (tabRegisti.isSelected()) {
+                    filteredRegisti.setPredicate(new Predicate<Regista>() {
+
+                        @Override
+                        public boolean test(Regista r) {
+                            if (newValue == null || newValue.isEmpty()) {
+                                return true;
+                            }
+                            String lowerCaseFilter = newValue.toLowerCase();
+                            
+                            if(r.getNome().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (r.getCognome() != null && r.getCognome().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (r.getNazione() != null && r.getNazione().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (r.getBiografia() != null && r.getBiografia().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            return false;
+                        }
+                    });
+
+                } else if (tabProduttori.isSelected()) {
+                    filteredProdutori.setPredicate(new Predicate<Produttore>() {
+
+                        @Override
+                        public boolean test(Produttore p) {
+                            if (newValue == null || newValue.isEmpty()) {
+                                return true;
+                            }
+                            String lowerCaseFilter = newValue.toLowerCase();
+                            
+                            if(p.getNome().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (p.getNazione() != null && p.getNazione().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (p.getDescrizione()!= null && p.getDescrizione().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            return false;
+                        }
+                    });
+                    
+                } else if (tabGeneri.isSelected()) {
+                    filteredGeneri.setPredicate(new Predicate<Genere>() {
+
+                        @Override
+                        public boolean test(Genere g) {
+                            if (newValue == null || newValue.isEmpty()) {
+                                return true;
+                            }
+                            String lowerCaseFilter = newValue.toLowerCase();
+                            
+                            if(g.getGenere().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            else if (g.getDescrizione()!= null && g.getDescrizione().toLowerCase().contains(lowerCaseFilter))
+                                return true;
+                            return false;
+                        }
+                    });
+                }
+            }
+        });
+        
+        tabPaneInfo.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
+                if(oldValue == tabFilms)
+                    filteredFilms.setPredicate(null);
+                else if (oldValue == tabAttori)
+                    filteredAttori.setPredicate(null);
+                else if (oldValue == tabRegisti)
+                    filteredRegisti.setPredicate(null);
+                else if(oldValue == tabProduttori)
+                    filteredProdutori.setPredicate(null);
+                else if (oldValue == tabGeneri)
+                    filteredGeneri.setPredicate(null);
+                
+                tfRicerca.clear();
+            }
+        });
+
         // seleziona una riga
         //tableFilms.getSelectionModel().clearSelection();
         // produttori evento cambia indice
@@ -171,6 +361,7 @@ public class FilmManagerController implements Initializable {
                 }
             }
         });
+
     }
 
     @FXML
@@ -181,14 +372,12 @@ public class FilmManagerController implements Initializable {
         if (tabFilms.isSelected()) {
 
             if (!tableFilms.getSelectionModel().isEmpty()) {
-
-                int i = tableFilms.getSelectionModel().getFocusedIndex();
-                Film film = films.get(i);
+                Film film = tableFilms.getSelectionModel().getSelectedItem();
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FilmModifica.fxml"));
                 Parent root = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
-                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initModality(Modality.NONE);
                 stage.initStyle(StageStyle.DECORATED);
                 stage.setTitle("Modifica Film");
                 stage.setScene(new Scene(root));
@@ -205,13 +394,12 @@ public class FilmManagerController implements Initializable {
 
             if (!tableAttori.getSelectionModel().isEmpty()) {
 
-                int i = tableAttori.getSelectionModel().getFocusedIndex();
-                Attore attore = attori.get(i);
+                Attore attore = tableAttori.getSelectionModel().getSelectedItem();
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AttoreModifica.fxml"));
                 Parent root = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
-                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initModality(Modality.NONE);
                 stage.initStyle(StageStyle.DECORATED);
                 stage.setTitle("Modifica Attore");
                 stage.setScene(new Scene(root));
@@ -225,13 +413,12 @@ public class FilmManagerController implements Initializable {
 
             if (!tableRegisti.getSelectionModel().isEmpty()) {
 
-                int i = tableRegisti.getSelectionModel().getFocusedIndex();
-                Regista regista = registi.get(i);
+                Regista regista = tableRegisti.getSelectionModel().getSelectedItem();
 
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegistaModifica.fxml"));
                 Parent root = (Parent) fxmlLoader.load();
                 Stage stage = new Stage();
-                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initModality(Modality.NONE);
                 stage.initStyle(StageStyle.DECORATED);
                 stage.setTitle("Modifica Regista");
                 stage.setScene(new Scene(root));
@@ -246,15 +433,11 @@ public class FilmManagerController implements Initializable {
 
     @FXML
     public void onClickNuovoFilm(ActionEvent event) throws IOException {
-
-        if (tabPaneInfo.getSelectionModel().getSelectedItem() != tabFilms) {
-            tabPaneInfo.getSelectionModel().select(tabFilms);
-        }
-
+        
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FilmModifica.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.NONE);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("Inserisci Film");
         stage.setScene(new Scene(root));
@@ -267,14 +450,10 @@ public class FilmManagerController implements Initializable {
     @FXML
     public void onClickNuovoAttore(ActionEvent event) throws IOException {
 
-        if (tabPaneInfo.getSelectionModel().getSelectedItem() != tabAttori) {
-            tabPaneInfo.getSelectionModel().select(tabAttori);
-        }
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AttoreModifica.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.NONE);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("Inserisci Attore");
         stage.setScene(new Scene(root));
@@ -286,14 +465,11 @@ public class FilmManagerController implements Initializable {
 
     @FXML
     public void onClickNuovoRegista(ActionEvent event) throws IOException {
-        if (tabPaneInfo.getSelectionModel().getSelectedItem() != tabRegisti) {
-            tabPaneInfo.getSelectionModel().select(tabRegisti);
-        }
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("RegistaModifica.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.NONE);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("Inserisci Regista");
         stage.setScene(new Scene(root));
@@ -404,43 +580,34 @@ public class FilmManagerController implements Initializable {
         if (tabFilms.isSelected()) {
 
             if (!tableFilms.getSelectionModel().isEmpty()) {
-                int i = tableFilms.getSelectionModel().getFocusedIndex();
-                Film f = films.get(i);
-
+                Film f = tableFilms.getSelectionModel().getSelectedItem();
                 Cinema.deleteInfo(f);
                 films.remove(f);
             }
         } else if (tabAttori.isSelected()) {
 
             if (!tableAttori.getSelectionModel().isEmpty()) {
-                int i = tableAttori.getSelectionModel().getFocusedIndex();
-                Attore a = attori.get(i);
-
+                Attore a = tableAttori.getSelectionModel().getSelectedItem();
                 Cinema.deleteInfo(a);
                 attori.remove(a);
             }
         } else if (tabRegisti.isSelected()) {
 
             if (!tableRegisti.getSelectionModel().isEmpty()) {
-                int i = tableRegisti.getSelectionModel().getFocusedIndex();
-                Regista r = registi.get(i);
+                Regista r = tableRegisti.getSelectionModel().getSelectedItem();
 
                 Cinema.deleteInfo(r);
                 registi.remove(r);
             }
         } else if (tabProduttori.isSelected()) {
             if (!listProduttori.getSelectionModel().isEmpty()) {
-                int i = listProduttori.getSelectionModel().getSelectedIndex();
-                Produttore p = produttori.get(i);
-
+                Produttore p = listProduttori.getSelectionModel().getSelectedItem();
                 Cinema.deleteInfo(p);
                 produttori.remove(p);
             }
         } else if (tabGeneri.isSelected()) {
             if (!listGeneri.getSelectionModel().isEmpty()) {
-                int i = listGeneri.getSelectionModel().getSelectedIndex();
-                Genere g = generi.get(i);
-
+                Genere g = listGeneri.getSelectionModel().getSelectedItem();
                 Cinema.deleteInfo(g);
                 generi.remove(g);
             }

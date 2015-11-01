@@ -333,7 +333,7 @@ public class FilmModificaController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ListaAggiungi.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.NONE);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("Cambia Regista");
         stage.setScene(new Scene(root));
@@ -350,7 +350,7 @@ public class FilmModificaController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ListaAggiungi.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.NONE);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("Aggiungi Attore");
         stage.setScene(new Scene(root));
@@ -365,7 +365,7 @@ public class FilmModificaController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ListaAggiungi.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.NONE);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("Aggiungi Casa Produttrice");
         stage.setScene(new Scene(root));
@@ -380,7 +380,7 @@ public class FilmModificaController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ListaAggiungi.fxml"));
         Parent root = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.NONE);
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("Aggiungi Genere");
         stage.setScene(new Scene(root));
