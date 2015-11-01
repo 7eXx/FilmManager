@@ -57,8 +57,11 @@ public class FilmModificaController implements Initializable {
     public ObservableList<RegistaOscar> regiaPres, regiaNonPres;
     public RegistaOscar regiaMod;
 
-    ObservableList<Genere> generiPres, generiNonPres;
-    ObservableList<Produttore> prodPres, prodNonPres;
+    public ObservableList<Genere> generiPres, generiNonPres;
+    public ArrayList<Genere> generiMod;
+
+    public ObservableList<Produttore> prodPres, prodNonPres;
+    public ArrayList<Produttore> prodMod;
 
     @FXML
     private TextField tfIdFilm, tfNome, tfDurata, tfNazione, tfVoto, tfBudget, tfNumOscar;
@@ -168,6 +171,8 @@ public class FilmModificaController implements Initializable {
 
         attoriMod = new ArrayList<>();
         regiaMod = null;
+        generiMod = new ArrayList<>();
+        prodMod = new ArrayList<>();
 
         /// gestione selezione attore
         listAttori.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AttoreOscar>() {
@@ -303,6 +308,13 @@ public class FilmModificaController implements Initializable {
             if (regiaMod != null) {
                 Cinema.updateFilmRegista(regiaMod, film);
             }
+            if (!generiMod.isEmpty()) {
+                Cinema.updateFilmGeneri(generiMod, film);
+            }
+            if(!prodMod.isEmpty())
+            {
+                Cinema.updateFilmProd(prodMod, film);
+            }
 
             Stage stage = (Stage) btConferma.getScene().getWindow();
             stage.close();
@@ -413,7 +425,6 @@ public class FilmModificaController implements Initializable {
             }
             attoriPres.remove(a);
             attoriNonPres.add(a);
-
             switch (a.getState()) {
                 case INSERTED:
                     attoriMod.remove(a);
@@ -432,18 +443,48 @@ public class FilmModificaController implements Initializable {
             if (a.isOscar()) {
                 removeOscar();
             }
-            System.out.println("removed lista: " + attoriMod);
+            System.out.println("removed actor: " + attoriMod);
         }
     }
 
     @FXML
     public void onRemoveProduttore(ActionEvent event) {
+        Produttore p = listProduttori.getSelectionModel().getSelectedItem();
+        prodPres.remove(p);
+        prodNonPres.add(p);
 
+        switch (p.getState()) {
+            case INSERTED:
+                prodMod.remove(p);
+                p.setState(State.NONE);
+                break;
+
+            case NONE:
+                prodMod.add(p);
+                p.setState(State.DELETED);
+                break;
+        }
+        System.out.println("removed prod: " + prodMod);
     }
 
     @FXML
     public void onRemoveGenere(ActionEvent event) {
+        Genere g = listGeneri.getSelectionModel().getSelectedItem();
+        generiPres.remove(g);
+        generiNonPres.add(g);
 
+        switch (g.getState()) {
+            case INSERTED:
+                generiMod.remove(g);
+                g.setState(State.NONE);
+                break;
+
+            case NONE:
+                generiMod.add(g);
+                g.setState(State.DELETED);
+                break;
+        }
+        System.out.println("removed generi: " + generiMod);
     }
 
     public void addOscar() {

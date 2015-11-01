@@ -805,13 +805,142 @@ public class Cinema {
                     pstm.executeUpdate();
                     success = true;
                     break;
-                    
+
                 case DELETED:
                     query = "DELETE FROM DIREZIONE WHERE ID_film = " + film.getId();
                     stmt = conn.createStatement();
                     stmt.executeUpdate(query);
                     success = true;
                     break;
+            }
+        } catch (SQLException ex) {
+
+            System.out.println("\n---SQLException caught ---\n");
+            while (ex != null) {
+                System.out.println("Message: " + ex.getMessage());
+                System.out.println("SQLState: " + ex.getSQLState());
+                System.out.println("ErrorCode: " + ex.getErrorCode());
+                ex = ex.getNextException();
+                System.out.println("");
+            }
+        } finally {
+            try {
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+                if (stmt != null && !stmt.isClosed()) {
+                    stmt.close();
+                }
+                if (pstm != null && !pstm.isClosed()) {
+                    pstm.close();
+                }
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return success;
+    }
+
+    public static boolean updateFilmGeneri(ArrayList<Genere> generiMod, Film film) {
+
+        Connection conn = null;
+        Statement stmt = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        boolean success = false;
+        String query;
+
+        try {
+
+            conn = DriverManager.getConnection(DBURL, USER, PASS);
+
+            for (Genere genere : generiMod) {
+
+                switch (genere.getState()) {
+                    case INSERTED:
+                        query = "INSERT INTO CLASSIFICAZIONE values (?,?)";
+                        pstm = conn.prepareStatement(query);
+                        pstm.setInt(1, film.getId());
+                        pstm.setInt(2, genere.getId());
+                        pstm.executeUpdate();
+                        success = true;
+                        break;
+                    case DELETED:
+                        query = "DELETE FROM CLASSIFICAZIONE WHERE ID_film = " + film.getId() + " AND ID_genere = " + genere.getId();
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(query);
+                        success = true;
+                        break;
+                    default:
+                        throw new AssertionError(genere.getState().name());
+                }
+            }
+        } catch (SQLException ex) {
+
+            System.out.println("\n---SQLException caught ---\n");
+            while (ex != null) {
+                System.out.println("Message: " + ex.getMessage());
+                System.out.println("SQLState: " + ex.getSQLState());
+                System.out.println("ErrorCode: " + ex.getErrorCode());
+                ex = ex.getNextException();
+                System.out.println("");
+            }
+        } finally {
+            try {
+                if (rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+                if (stmt != null && !stmt.isClosed()) {
+                    stmt.close();
+                }
+                if (pstm != null && !pstm.isClosed()) {
+                    pstm.close();
+                }
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return success;
+    }
+
+    public static boolean updateFilmProd(ArrayList<Produttore> prodMod, Film film) {
+        Connection conn = null;
+        Statement stmt = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+        boolean success = false;
+        String query;
+
+        try {
+
+            conn = DriverManager.getConnection(DBURL, USER, PASS);
+
+            for (Produttore prod : prodMod) {
+
+                switch (prod.getState()) {
+                    case INSERTED:
+                        query = "INSERT INTO PRODUZIONE values (?,?)";
+                        pstm = conn.prepareStatement(query);
+                        pstm.setInt(1, film.getId());
+                        pstm.setInt(2, prod.getId());
+                        pstm.executeUpdate();
+                        success = true;
+                        break;
+                    case DELETED:
+                        query = "DELETE FROM PRODUZIONE WHERE ID_film = " + film.getId() + " AND ID_casa = " + prod.getId();
+                        stmt = conn.createStatement();
+                        stmt.executeUpdate(query);
+                        success = true;
+                        break;
+                    default:
+                        throw new AssertionError(prod.getState().name());
+                }
             }
         } catch (SQLException ex) {
 

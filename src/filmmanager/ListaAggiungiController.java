@@ -7,6 +7,10 @@ package filmmanager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +19,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import support.AttoreOscar;
 import support.Cinema.State;
+import support.Genere;
+import support.Produttore;
 import support.RegistaOscar;
 
 /**
@@ -33,13 +39,40 @@ public class ListaAggiungiController implements Initializable {
     private TextField tfRicerca;
     @FXML
     private ListView listAggiungi;
+    @FXML
+    FilteredList filteredData;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        
+        tfRicerca.textProperty().addListener(new ChangeListener<String>() {
 
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+
+                filteredData.setPredicate(new Predicate() {
+
+                    public boolean test(Object person) {
+                        // If filter text is empty, display all persons.
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+                        
+                        // Compare first name and last name of every person with filter text.
+                        String lowerCaseFilter = newValue.toLowerCase();
+                        
+                        if (person.toString().toLowerCase().contains(lowerCaseFilter)) {
+                            return true;
+                        }
+                        return false; // Does not match.
+                    }
+                });
+            }
+        });
     }
 
     public void initData(FilmModificaController controller, Class c) {
@@ -51,7 +84,21 @@ public class ListaAggiungiController implements Initializable {
             listAggiungi.setItems(controller.attoriNonPres);
         } else if (c.equals(RegistaOscar.class)) {
             listAggiungi.setItems(controller.regiaNonPres);
+        } else if (c.equals(Genere.class)) {
+            listAggiungi.setItems(controller.generiNonPres);
+        } else if (c.equals(Produttore.class)) {
+            listAggiungi.setItems(controller.prodNonPres);
         }
+        
+        filteredData = new FilteredList(listAggiungi.getItems(), new Predicate() {
+
+            @Override
+            public boolean test(Object p) {
+                return true;
+            }
+        });
+        
+        listAggiungi.setItems(filteredData);
     }
 
     @FXML
@@ -60,6 +107,7 @@ public class ListaAggiungiController implements Initializable {
             //AttoreOscar
             if (c.equals(AttoreOscar.class)) {
                 int i = listAggiungi.getSelectionModel().getSelectedIndex();
+                i = filteredData.getSourceIndex(i);
                 AttoreOscar a = controller.attoriNonPres.get(i);
                 controller.attoriNonPres.remove(a);
                 controller.attoriPres.add(a);
@@ -81,14 +129,15 @@ public class ListaAggiungiController implements Initializable {
                 if (a.isOscar()) {
                     controller.addOscar();
                 }
-                System.out.println("instert lista: " + controller.attoriMod);
+                System.out.println("insert actor: " + controller.attoriMod);
 
             } else if (c.equals(RegistaOscar.class)) {
 
                 int i = listAggiungi.getSelectionModel().getSelectedIndex();
+                i = filteredData.getSourceIndex(i);
                 RegistaOscar r = controller.regiaNonPres.get(i);
                 controller.resetBoxRegia();
-                
+
                 if (!controller.regiaPres.isEmpty()) {
                     RegistaOscar o = controller.regiaPres.get(0);
                     controller.regiaPres.set(0, r);
@@ -102,11 +151,11 @@ public class ListaAggiungiController implements Initializable {
                 if (controller.regiaMod == null) {
                     controller.regiaMod = r;
                     controller.regiaMod.setState(State.INSERTED);
-                    
+
                 } else {
-                    
+
                     switch (controller.regiaMod.getState()) {
-                        
+
                         case NONE:
                         case MODIFIED:
                         case DELETED:
@@ -118,7 +167,46 @@ public class ListaAggiungiController implements Initializable {
                             break;
                     }
                 }
-                System.out.println("insert lista: " + controller.regiaMod);
+                System.out.println("insert regia: " + controller.regiaMod);
+            } else if (c.equals(Genere.class)) {
+
+                int i = listAggiungi.getSelectionModel().getSelectedIndex();
+                i = filteredData.getSourceIndex(i);
+                Genere g = controller.generiNonPres.get(i);
+                controller.generiNonPres.remove(g);
+                controller.generiPres.add(g);
+                switch (g.getState()) {
+                    case DELETED:
+                        g.setState(State.NONE);
+                        controller.generiMod.remove(g);
+                        break;
+
+                    case NONE:
+                        g.setState(State.INSERTED);
+                        controller.generiMod.add(g);
+                        break;
+                }
+                System.out.println("insert genere: " + controller.generiMod);
+
+            } else if (c.equals(Produttore.class)) {
+
+                int i = listAggiungi.getSelectionModel().getSelectedIndex();
+                i = filteredData.getSourceIndex(i);
+                Produttore p = controller.prodNonPres.get(i);
+                controller.prodNonPres.remove(p);
+                controller.prodPres.add(p);
+                switch (p.getState()) {
+                    case DELETED:
+                        p.setState(State.NONE);
+                        controller.prodMod.remove(p);
+                        break;
+
+                    case NONE:
+                        p.setState(State.INSERTED);
+                        controller.prodMod.add(p);
+                        break;
+                }
+                System.out.println("insert prod: " + controller.prodMod);
             }
         }
     }

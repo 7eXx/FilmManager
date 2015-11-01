@@ -9,22 +9,43 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import support.Cinema.State;
 
 /**
  *
  * @author marco
  */
 public class Produttore {
-    
+
     public static final String ID = "ID_casa";
     public static final String NOME = "nome";
     public static final String NAZIONE = "nazione";
     public static final String DESCRIZIONE = "descrizione";
-    
+
     private final IntegerProperty id = new SimpleIntegerProperty();
     private final StringProperty nome = new SimpleStringProperty();
     private final StringProperty nazione = new SimpleStringProperty();
     private final StringProperty descrizione = new SimpleStringProperty();
+
+    private State state = State.NONE;
+
+    /**
+     * Get the value of state
+     *
+     * @return the value of state
+     */
+    public State getState() {
+        return state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @param state new value of state
+     */
+    public void setState(State state) {
+        this.state = state;
+    }
 
     public String getDescrizione() {
         return descrizione.get();
@@ -73,11 +94,10 @@ public class Produttore {
     public IntegerProperty idProperty() {
         return id;
     }
-    
+
     @Override
-    public String toString()
-    {
+    public String toString() {
         return nome.get();
     }
-    
+
 }
