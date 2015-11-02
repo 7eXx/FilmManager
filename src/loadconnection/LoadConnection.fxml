@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="298.0" prefWidth="254.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="loadconnectio.LoadConnectionController">
+   <children>
+      <TextField fx:id="tfUtente" layoutX="78.0" layoutY="148.0" />
+      <Button fx:id="btConnetti" layoutX="38.0" layoutY="242.0" mnemonicParsing="false" onAction="#onClickConnetti" prefHeight="33.0" prefWidth="80.0" text="Connetti" />
+      <Label layoutX="28.0" layoutY="152.0" text="Utente" />
+      <Label layoutX="14.0" layoutY="194.0" text="Password" />
+      <PasswordField fx:id="pfPassword" layoutX="78.0" layoutY="190.0" />
+      <TextField fx:id="tfServer" layoutX="78.0" layoutY="24.0" />
+      <TextField fx:id="tfPorta" layoutX="78.0" layoutY="64.0" />
+      <TextField fx:id="tfDatabase" layoutX="78.0" layoutY="107.0" />
+      <Label layoutX="14.0" layoutY="111.0" text="Database" />
+      <Label layoutX="29.0" layoutY="28.0" text="Server" />
+      <Label layoutX="32.0" layoutY="68.0" text="Porta" />
+      <Button fx:id="btTest" layoutX="136.0" layoutY="242.0" mnemonicParsing="false" onAction="#onClickTest" prefHeight="33.0" prefWidth="80.0" text="Test" />
+   </children>
+</AnchorPane>

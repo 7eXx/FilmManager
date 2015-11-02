@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -27,10 +29,12 @@ public class Cinema {
         NONE, MODIFIED, INSERTED, DELETED, MOD_DELETED
     };
 
+    static final String SERVER = "localhost";
+    static final String PORT =  "1433";
     static final String DB = "CINEMA";
     static final String USER = "utente";
     static final String PASS = "password";
-    static final String DBURL = "jdbc:sqlserver://localhost:1433;databaseName=" + DB;
+    static final String DBURL = "jdbc:sqlserver://"+SERVER+":"+PORT+";databaseName=" + DB;
 
     private static ObservableList getFilms(Object o, Statement stmt, ResultSet rs) throws SQLException {
 
@@ -971,6 +975,21 @@ public class Cinema {
             }
         }
         return success;
+    }
+    
+    public boolean testConnection(String server, int port, String database, String user, String password)
+    {
+        String dburl = "jdbc:sqlserver://"+server+":"+port+";databaseName=" + database;
+        
+        Connection conn = null;
+        
+        try {
+            conn = DriverManager.getConnection(dburl, user, password);
+        } catch (SQLException ex) {
+            Logger.getLogger(Cinema.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return true;
     }
 
 }
