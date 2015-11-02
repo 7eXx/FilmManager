@@ -980,16 +980,32 @@ public class Cinema {
     public boolean testConnection(String server, int port, String database, String user, String password)
     {
         String dburl = "jdbc:sqlserver://"+server+":"+port+";databaseName=" + database;
-        
+        boolean success = false;
         Connection conn = null;
         
         try {
             conn = DriverManager.getConnection(dburl, user, password);
+            success = true;
         } catch (SQLException ex) {
-            Logger.getLogger(Cinema.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("\n---SQLException caught ---\n");
+            while (ex != null) {
+                System.out.println("Message: " + ex.getMessage());
+                System.out.println("SQLState: " + ex.getSQLState());
+                System.out.println("ErrorCode: " + ex.getErrorCode());
+                ex = ex.getNextException();
+                System.out.println("");
+            }
         }
-        
-        return true;
+        finally{
+            try {
+                if (conn != null && !conn.isClosed()) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return success;
     }
 
 }
