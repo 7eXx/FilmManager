@@ -19,7 +19,7 @@ public class FilmManager extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FilmManager.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("LoadConnection.fxml"));
         
         Scene scene = new Scene(root);
         stage.setTitle("Gestione Film");
