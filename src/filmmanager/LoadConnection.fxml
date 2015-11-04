@@ -18,7 +18,7 @@
       <TextField fx:id="tfUtente" layoutX="78.0" layoutY="148.0" text="utente" />
       <Label layoutX="14.0" layoutY="194.0" text="Password" />
       <PasswordField fx:id="pfPassword" layoutX="78.0" layoutY="190.0" text="password" />
-      <Button fx:id="btConnetti" layoutX="44.0" layoutY="244.0" mnemonicParsing="false" onAction="#onClickConnetti" text="Connetti" />
+      <Button fx:id="btConnetti" layoutX="41.0" layoutY="244.0" mnemonicParsing="false" onAction="#onClickConnetti" prefHeight="31.0" prefWidth="77.0" text="Connetti" />
       <Button fx:id="btTest" layoutX="143.0" layoutY="244.0" mnemonicParsing="false" onAction="#onClickTest" prefHeight="31.0" prefWidth="77.0" text="Test" />
    </children>
 </AnchorPane>
