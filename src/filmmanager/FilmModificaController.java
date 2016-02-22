@@ -117,7 +117,7 @@ public class FilmModificaController implements Initializable {
             prodNonPres = Cinema.getInfo(Produttore.class, film, false);
 
             regiaPres = Cinema.getInfo(RegistaOscar.class, film, true);
-            regiaNonPres = Cinema.getInfo(RegistaOscar.class, null, false);
+            regiaNonPres = Cinema.getInfo(RegistaOscar.class, film, false);
 
             for (AttoreOscar att : attoriPres) {
                 if (att.isOscar()) {
