@@ -311,8 +311,7 @@ public class FilmModificaController implements Initializable {
             if (!generiMod.isEmpty()) {
                 Cinema.updateFilmGeneri(generiMod, film);
             }
-            if(!prodMod.isEmpty())
-            {
+            if (!prodMod.isEmpty()) {
                 Cinema.updateFilmProd(prodMod, film);
             }
 
@@ -449,42 +448,46 @@ public class FilmModificaController implements Initializable {
 
     @FXML
     public void onRemoveProduttore(ActionEvent event) {
-        Produttore p = listProduttori.getSelectionModel().getSelectedItem();
-        prodPres.remove(p);
-        prodNonPres.add(p);
+        if (!listProduttori.getSelectionModel().isEmpty()) {
+            Produttore p = listProduttori.getSelectionModel().getSelectedItem();
+            prodPres.remove(p);
+            prodNonPres.add(p);
 
-        switch (p.getState()) {
-            case INSERTED:
-                prodMod.remove(p);
-                p.setState(State.NONE);
-                break;
+            switch (p.getState()) {
+                case INSERTED:
+                    prodMod.remove(p);
+                    p.setState(State.NONE);
+                    break;
 
-            case NONE:
-                prodMod.add(p);
-                p.setState(State.DELETED);
-                break;
+                case NONE:
+                    prodMod.add(p);
+                    p.setState(State.DELETED);
+                    break;
+            }
+            System.out.println("removed prod: " + prodMod);
         }
-        System.out.println("removed prod: " + prodMod);
     }
 
     @FXML
     public void onRemoveGenere(ActionEvent event) {
-        Genere g = listGeneri.getSelectionModel().getSelectedItem();
-        generiPres.remove(g);
-        generiNonPres.add(g);
+        if (!listGeneri.getSelectionModel().isEmpty()) {
+            Genere g = listGeneri.getSelectionModel().getSelectedItem();
+            generiPres.remove(g);
+            generiNonPres.add(g);
 
-        switch (g.getState()) {
-            case INSERTED:
-                generiMod.remove(g);
-                g.setState(State.NONE);
-                break;
+            switch (g.getState()) {
+                case INSERTED:
+                    generiMod.remove(g);
+                    g.setState(State.NONE);
+                    break;
 
-            case NONE:
-                generiMod.add(g);
-                g.setState(State.DELETED);
-                break;
+                case NONE:
+                    generiMod.add(g);
+                    g.setState(State.DELETED);
+                    break;
+            }
+            System.out.println("removed generi: " + generiMod);
         }
-        System.out.println("removed generi: " + generiMod);
     }
 
     public void addOscar() {

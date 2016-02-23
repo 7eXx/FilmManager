@@ -6,9 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="539.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.FilmManagerController">
+<AnchorPane id="AnchorPane" prefHeight="597.0" prefWidth="896.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="filmmanager.FilmManagerController">
    <children>
-      <MenuBar prefHeight="32.0" prefWidth="671.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar prefHeight="39.0" prefWidth="896.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="Nuovo">
             <items>
@@ -23,7 +23,6 @@
                <items>
                   <MenuItem fx:id="itemModifica" mnemonicParsing="false" onAction="#onClickModifica" text="Modifica Selezione" />
                   <MenuItem fx:id="itemRimuovi" mnemonicParsing="false" onAction="#onClickElimina" text="Cancella Selezione" />
-                  <MenuItem mnemonicParsing="false" text="Trova" />
                </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Aiuto">
@@ -33,9 +32,9 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Label text="Ricerca" AnchorPane.rightAnchor="150.0" AnchorPane.topAnchor="7.0" />
-      <TextField fx:id="tfRicerca" prefHeight="25.0" prefWidth="130.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="3.0" />
-      <TabPane fx:id="tabPaneInfo" layoutY="31.0" prefHeight="512.0" prefWidth="671.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="31.0">
+      <Label prefHeight="21.0" prefWidth="54.0" text="Ricerca" AnchorPane.rightAnchor="203.0" AnchorPane.topAnchor="7.0" />
+      <TextField fx:id="tfRicerca" prefHeight="31.0" prefWidth="195.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="3.0" />
+      <TabPane fx:id="tabPaneInfo" layoutY="39.0" prefHeight="558.0" prefWidth="896.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
         <tabs>
           <Tab fx:id="tabFilms" text="Films">
             <content>
@@ -43,13 +42,13 @@
                      <children>
                         <TableView fx:id="tableFilms" editable="true" layoutX="67.0" layoutY="-2.0" prefHeight="476.0" prefWidth="671.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-2.0">
                           <columns>
-                            <TableColumn fx:id="filmNome" prefWidth="231.0" resizable="false" text="Nome" />
-                            <TableColumn fx:id="filmDurata" minWidth="0.0" prefWidth="59.0" resizable="false" text="Durata" />
-                              <TableColumn fx:id="filmNazione" prefWidth="112.0" resizable="false" text="Nazione" />
-                              <TableColumn fx:id="filmBudget" prefWidth="73.0" resizable="false" text="Budget" />
-                              <TableColumn fx:id="filmDataUscita" prefWidth="88.0" resizable="false" text="Data Uscita" />
-                              <TableColumn fx:id="filmVoto" minWidth="8.0" prefWidth="46.0" resizable="false" text="Voto" />
-                              <TableColumn fx:id="filmNumOscar" prefWidth="52.0" resizable="false" text="Oscar" />
+                            <TableColumn fx:id="filmNome" prefWidth="232.0" resizable="false" text="Nome" />
+                            <TableColumn fx:id="filmDurata" minWidth="0.0" prefWidth="126.0" resizable="false" text="Durata (min)" />
+                              <TableColumn fx:id="filmNazione" prefWidth="132.0" resizable="false" text="Nazione" />
+                              <TableColumn fx:id="filmBudget" prefWidth="116.0" resizable="false" text="Budget ($)" />
+                              <TableColumn fx:id="filmDataUscita" prefWidth="115.0" resizable="false" text="Data Uscita" />
+                              <TableColumn fx:id="filmVoto" minWidth="8.0" prefWidth="67.0" resizable="false" text="Voto" />
+                              <TableColumn fx:id="filmNumOscar" prefWidth="91.0" resizable="false" text="Oscar" />
                           </columns>
                         </TableView>
                      </children></AnchorPane>
@@ -61,11 +60,11 @@
                      <children>
                         <TableView fx:id="tableAttori" layoutX="202.0" layoutY="125.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <columns>
-                              <TableColumn fx:id="attoreNome" prefWidth="138.0" resizable="false" text="Nome" />
-                              <TableColumn fx:id="attoreCognome" prefWidth="137.0" resizable="false" text="Cognome" />
-                              <TableColumn fx:id="attoreNazione" prefWidth="97.0" resizable="false" text="Nazione" />
-                              <TableColumn fx:id="attoreCitta" prefWidth="141.0" resizable="false" text="Citta" />
-                              <TableColumn fx:id="attoreDataNascita" prefWidth="139.0" resizable="false" text="Data Nascita" />
+                              <TableColumn fx:id="attoreNome" prefWidth="205.0" resizable="false" text="Nome" />
+                              <TableColumn fx:id="attoreCognome" minWidth="0.0" prefWidth="179.0" resizable="false" text="Cognome" />
+                              <TableColumn fx:id="attoreNazione" prefWidth="161.0" resizable="false" text="Nazione" />
+                              <TableColumn fx:id="attoreCitta" prefWidth="164.0" resizable="false" text="Citta" />
+                              <TableColumn fx:id="attoreDataNascita" prefWidth="154.0" resizable="false" text="Data Nascita" />
                            </columns></TableView>
                      </children></AnchorPane>
             </content>
@@ -76,10 +75,10 @@
                      <children>
                         <TableView fx:id="tableRegisti" layoutX="217.0" layoutY="137.0" prefHeight="473.0" prefWidth="671.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                            <TableColumn fx:id="registaNome" prefWidth="177.0" resizable="false" text="Nome" />
-                              <TableColumn fx:id="registaCognome" prefWidth="171.0" resizable="false" text="Cognome" />
-                              <TableColumn fx:id="registaNazione" prefWidth="169.0" resizable="false" text="Nazione" />
-                              <TableColumn fx:id="registaDataNascita" prefWidth="133.0" resizable="false" text="Data Nascita" />
+                            <TableColumn fx:id="registaNome" prefWidth="233.0" resizable="false" text="Nome" />
+                              <TableColumn fx:id="registaCognome" prefWidth="260.0" resizable="false" text="Cognome" />
+                              <TableColumn fx:id="registaNazione" prefWidth="163.0" resizable="false" text="Nazione" />
+                              <TableColumn fx:id="registaDataNascita" prefWidth="207.0" resizable="false" text="Data Nascita" />
                           </columns>
                         </TableView>
                      </children>
@@ -90,18 +89,18 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
                      <children>
-                        <ListView fx:id="listProduttori" layoutX="43.0" layoutY="42.0" prefHeight="174.0" prefWidth="290.0" />
-                        <ListView fx:id="listProduttoriFilm" layoutX="43.0" layoutY="240.0" prefHeight="174.0" prefWidth="290.0" />
-                        <Label layoutX="367.0" layoutY="18.0" text="ID Compagnia" />
-                        <TextField fx:id="tfIdProduttore" disable="true" editable="false" layoutX="470.0" layoutY="14.0" prefHeight="25.0" prefWidth="36.0" />
-                        <Label layoutX="410.0" layoutY="60.0" text="Nome" />
-                        <TextField fx:id="tfNomeProduttore" layoutX="470.0" layoutY="56.0" />
-                        <Label layoutX="399.0" layoutY="102.0" text="Nazione" />
-                        <TextField fx:id="tfNazioneProduttore" layoutX="470.0" layoutY="98.0" />
-                        <Label layoutX="380.0" layoutY="139.0" text="Descrizione" />
-                        <TextArea fx:id="taDescrizioneProduttore" layoutX="378.0" layoutY="172.0" prefHeight="224.0" prefWidth="256.0" wrapText="true" />
-                        <Button fx:id="btConfermaProduttore" layoutX="387.0" layoutY="418.0" mnemonicParsing="false" onAction="#onClickConfermaProduttore" prefHeight="25.0" prefWidth="91.0" text="Conferma" />
-                        <Button fx:id="btNuovoProduttore" layoutX="530.0" layoutY="418.0" mnemonicParsing="false" onAction="#onClickNuovoProduttore" prefHeight="25.0" prefWidth="91.0" text="Nuovo" />
+                        <ListView fx:id="listProduttori" layoutX="43.0" layoutY="42.0" prefHeight="174.0" prefWidth="376.0" />
+                        <ListView fx:id="listProduttoriFilm" layoutX="43.0" layoutY="240.0" prefHeight="217.0" prefWidth="376.0" />
+                        <Label layoutX="476.0" layoutY="18.0" text="ID Compagnia" />
+                        <TextField fx:id="tfIdProduttore" disable="true" editable="false" layoutX="579.0" layoutY="14.0" prefHeight="31.0" prefWidth="83.0" />
+                        <Label layoutX="519.0" layoutY="60.0" text="Nome" />
+                        <TextField fx:id="tfNomeProduttore" layoutX="579.0" layoutY="56.0" prefHeight="31.0" prefWidth="281.0" />
+                        <Label layoutX="508.0" layoutY="102.0" text="Nazione" />
+                        <TextField fx:id="tfNazioneProduttore" layoutX="579.0" layoutY="98.0" prefHeight="31.0" prefWidth="281.0" />
+                        <Label layoutX="478.0" layoutY="137.0" text="Descrizione" />
+                        <TextArea fx:id="taDescrizioneProduttore" layoutX="476.0" layoutY="170.0" prefHeight="224.0" prefWidth="384.0" wrapText="true" />
+                        <Button fx:id="btConfermaProduttore" layoutX="524.0" layoutY="413.0" mnemonicParsing="false" onAction="#onClickConfermaProduttore" prefHeight="45.0" prefWidth="130.0" text="Conferma" />
+                        <Button fx:id="btNuovoProduttore" layoutX="705.0" layoutY="411.0" mnemonicParsing="false" onAction="#onClickNuovoProduttore" prefHeight="46.0" prefWidth="125.0" text="Nuovo" />
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -109,16 +108,16 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="421.0" prefWidth="504.0">
                      <children>
-                        <ListView fx:id="listGeneri" layoutX="43.0" layoutY="42.0" prefHeight="161.0" prefWidth="290.0" />
-                        <ListView fx:id="listGeneriFilm" layoutX="43.0" layoutY="225.0" prefHeight="171.0" prefWidth="290.0" />
-                        <Label layoutX="363.0" layoutY="18.0" text="ID Genere" />
-                        <TextField fx:id="tfIdGenere" disable="true" editable="false" layoutX="466.0" layoutY="14.0" prefHeight="25.0" prefWidth="36.0" />
-                        <Label layoutX="406.0" layoutY="60.0" text="Nome" />
-                        <TextField fx:id="tfNomeGenere" layoutX="466.0" layoutY="56.0" />
-                        <Label layoutX="376.0" layoutY="100.0" text="Descrizione" />
-                        <TextArea fx:id="taDescrizioneGenere" layoutX="374.0" layoutY="132.0" prefHeight="264.0" prefWidth="256.0" wrapText="true" />
-                        <Button fx:id="btConfermaProduttore1" layoutX="386.0" layoutY="412.0" mnemonicParsing="false" onAction="#onClickConfermaGenere" prefHeight="25.0" prefWidth="91.0" text="Conferma" />
-                        <Button fx:id="btNuovoProduttore1" layoutX="524.0" layoutY="412.0" mnemonicParsing="false" onAction="#onClickNuovoGenere" prefHeight="25.0" prefWidth="91.0" text="Nuovo" />
+                        <ListView fx:id="listGeneri" layoutX="43.0" layoutY="42.0" prefHeight="161.0" prefWidth="398.0" />
+                        <ListView fx:id="listGeneriFilm" layoutX="43.0" layoutY="225.0" prefHeight="245.0" prefWidth="396.0" />
+                        <Label layoutX="483.0" layoutY="34.0" text="ID Genere" />
+                        <TextField fx:id="tfIdGenere" disable="true" editable="false" layoutX="586.0" layoutY="30.0" prefHeight="25.0" prefWidth="36.0" />
+                        <Label layoutX="526.0" layoutY="76.0" text="Nome" />
+                        <TextField fx:id="tfNomeGenere" layoutX="586.0" layoutY="72.0" prefHeight="31.0" prefWidth="269.0" />
+                        <Label layoutX="496.0" layoutY="116.0" text="Descrizione" />
+                        <TextArea fx:id="taDescrizioneGenere" layoutX="494.0" layoutY="148.0" prefHeight="264.0" prefWidth="360.0" wrapText="true" />
+                        <Button fx:id="btConfermaProduttore1" layoutX="535.0" layoutY="425.0" mnemonicParsing="false" onAction="#onClickConfermaGenere" prefHeight="51.0" prefWidth="115.0" text="Conferma" />
+                        <Button fx:id="btNuovoProduttore1" layoutX="721.0" layoutY="425.0" mnemonicParsing="false" onAction="#onClickNuovoGenere" prefHeight="51.0" prefWidth="113.0" text="Nuovo" />
                      </children>
                   </AnchorPane>
                </content>
