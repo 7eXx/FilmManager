@@ -618,6 +618,20 @@ public class FilmManagerController implements Initializable {
             }
         }
     }
+    
+    @FXML
+    public void onClickInformazioni(ActionEvent event) throws IOException
+    {
+        // visualizza le informazioni sull'applicazione
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Information.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.initModality(Modality.NONE);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setTitle("Informazioni Programma");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 
     /**
      * aggiunge un oggetto alla relativa lista

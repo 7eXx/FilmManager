@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="381.0" prefWidth="579.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="filmmanager.InformationController">
+   <children>
+      <TextArea editable="false" layoutX="27.0" layoutY="26.0" prefHeight="333.0" prefWidth="526.0" text="Questo programma realizzato in java si appoggia a una base dati costruita su SQL Server di Microsoft. L'applicativo consente di gestire una libreria di film memorizzando informazioni sulle varie pellicole, attori partecipanti, registi, case e generi cinematografici.&#10;Il campo di ricerca consente di recuperare informazioni presenti ovunque nella videata attiva. &#10;&#10;Realizzato da Marco Tessari.&#10;Info marco.texx@yahoo.com" wrapText="true" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="27.0" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="26.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextArea>
+   </children>
+</AnchorPane>

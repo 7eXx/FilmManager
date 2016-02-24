@@ -49,7 +49,7 @@ public class RegistaModificaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        // TODO Nothing
     }
 
     public void onClickConferma(ActionEvent event) {

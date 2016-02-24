@@ -71,8 +71,6 @@ public class LoadConnectionController implements Initializable {
             stage.setScene(scene);
             stage.show();
 
-            stage.show();
-
             Stage s = (Stage) btConnetti.getScene().getWindow();
             s.close();
         } else {
