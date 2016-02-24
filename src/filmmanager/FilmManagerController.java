@@ -178,22 +178,24 @@ public class FilmManagerController implements Initializable {
                 return true;
             }
         });
-
+        // registrazione ordinamento dei film
         sortedFilms = new SortedList<>(filteredFilms);
         sortedFilms.comparatorProperty().bind(tableFilms.comparatorProperty());
         tableFilms.setItems(sortedFilms);
-        
+        // registrazione ordinamento attori
         sortedAttori = new SortedList<>(filteredAttori);
         sortedAttori.comparatorProperty().bind(tableAttori.comparatorProperty());
         tableAttori.setItems(sortedAttori);
-        
+        // registrazione ordinamento registi
         sortedRegisti = new SortedList<>(filteredRegisti);
         sortedRegisti.comparatorProperty().bind(tableRegisti.comparatorProperty());
         tableRegisti.setItems(sortedRegisti);
-        
+        // registrazione filtro produttori
         listProduttori.setItems(filteredProdutori);
+        // registrazione filtro genere
         listGeneri.setItems(filteredGeneri);
 
+        // gestione evento cambiamento campo di ricerca
         tfRicerca.textProperty().addListener(new ChangeListener<String>() {
 
             @Override
@@ -300,6 +302,7 @@ public class FilmManagerController implements Initializable {
             }
         });
         
+        // svuotamento campo di ricerca nel cambiamento della tab
         tabPaneInfo.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
 
             @Override
@@ -365,6 +368,7 @@ public class FilmManagerController implements Initializable {
         });   
     }
 
+    // gestione modifica su elemento selezionato
     @FXML
     public void onClickModifica(ActionEvent event) throws IOException {
 
@@ -431,7 +435,7 @@ public class FilmManagerController implements Initializable {
             }
         }
     }
-
+    
     @FXML
     public void onClickNuovoFilm(ActionEvent event) throws IOException {
         
@@ -617,7 +621,6 @@ public class FilmManagerController implements Initializable {
 
     /**
      * aggiunge un oggetto alla relativa lista
-     *
      * @param o oggetto da aggiungere
      */
     public void insertInfo(Object o) {
